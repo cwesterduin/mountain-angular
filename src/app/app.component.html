@@ -1,3 +1,13 @@
+<amplify-authenticator>
+  <ng-template
+    amplifySlot="authenticated"
+    let-user="user"
+    let-signOut="signOut"
+  >
+    <h1>Welcome {{ user.username }}!</h1>
+    <button (click)="signOut()">Sign Out</button>
+  </ng-template>
+</amplify-authenticator>
 <h1>Angular Router App</h1>
 <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) -->
 <nav>

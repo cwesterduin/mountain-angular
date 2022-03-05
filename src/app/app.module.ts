@@ -17,6 +17,14 @@ import { IndexComponent } from './index/index.component';
 import {RouterModule} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import { LoginComponent } from './login/login.component';
+import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
+import { Amplify, Auth } from 'aws-amplify';
+
+import config from '../aws-exports';
+
+
+Amplify.configure(config);
+
 
 @NgModule({
   declarations: [
@@ -36,7 +44,8 @@ import { LoginComponent } from './login/login.component';
     MatTableModule,
     MatIconModule,
     NgxFileDropModule,
-    RouterModule
+    RouterModule,
+    AmplifyAuthenticatorModule
   ],
   providers: [
     TableService,

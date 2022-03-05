@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FolderService, Data} from "./folder.service";
+import { Amplify, Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-folder',
@@ -7,6 +8,7 @@ import {FolderService, Data} from "./folder.service";
   styleUrls: ['./folder.component.css']
 })
 export class FolderComponent implements OnInit {
+  session: any = Auth.currentSession();
 
   constructor(private folderService: FolderService) { }
 
@@ -29,6 +31,8 @@ export class FolderComponent implements OnInit {
           this.childFolders = this.dataSource.filter((d: Array<string>) => d.length == 1).sort()
           this.currentFolder = "root"
         })
+
+    console.log(this.session)
   }
 
   updateFolderData(folder: any){
