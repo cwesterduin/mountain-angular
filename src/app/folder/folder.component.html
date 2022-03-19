@@ -1,14 +1,19 @@
-<ul>root/<li (click)="goTo(string)" style="display: inline" *ngFor="let string of path">{{string}}/</li></ul>
+<ul>
+  <li (click)="goTo('root')" style="display: inline">root</li>
+  /
+  <li (click)="goTo(string)" style="display: inline" *ngFor="let string of path">{{string}}/</li>
+</ul>
 <button (click)="goBack()" [disabled]="currentFolder === 'root'">back</button>
 <h2>{{currentFolder || "Root"}}</h2>
 <div style="display: flex; flex-flow: wrap">
-<div style="padding: 1rem"
-  *ngFor="let object of childFolders"
-  (dblclick)="updateFolderData(object)"
->
-  <mat-icon aria-hidden="false" aria-label="Example home icon">folder</mat-icon>
-  <p>{{object[object.length - 1]}}</p>
-</div>
+  <div style="padding: 1rem"
+       *ngFor="let folder of childFolders"
+       (click)="select(folder[folder.length - 1])"
+       (dblclick)="updateFolderData(folder)"
+  >
+    <mat-icon aria-hidden="false" aria-label="Example home icon">folder</mat-icon>
+    <p>{{folder[folder.length - 1]}}</p>
+  </div>
   <app-s3-image [path]="path"></app-s3-image>
 
 </div>

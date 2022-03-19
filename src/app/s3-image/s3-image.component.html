@@ -1,2 +1,4 @@
-<p>s3-image works!</p>
-<p>{{path}}</p>
+<ng-container
+     *ngFor="let img of imageData"
+><img style="margin: 1rem" height="40" src="https://{{img.bucketName}}.s3.eu-west-2.amazonaws.com/{{img.path}}"/>
+</ng-container>

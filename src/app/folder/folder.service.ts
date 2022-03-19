@@ -9,7 +9,7 @@ export interface Data extends Array<any>{
 export class FolderService {
   constructor(private http: HttpClient) { }
 
-  configUrl = 'http://localhost:8080/s3/alfie192345/folders/';
+  configUrl = 'http://localhost:8080/s3/testbucket240222/folders/';
 
   getConfig() {
     return this.http.get<Data>(this.configUrl);

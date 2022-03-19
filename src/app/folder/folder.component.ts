@@ -36,6 +36,8 @@ export class FolderComponent implements OnInit {
 
   updateFolderData(folder: any){
     this.path.push(folder[folder.length - 1])
+    //update to force change detection in child
+    this.path = [].concat(this.path);
     this.currentFolder = folder[folder.length - 1];
     this.childFolders = this.dataSource.filter((d: any) => this.arraysEqual(d.slice(0, -1), this.path)).sort()
   }
@@ -44,6 +46,8 @@ export class FolderComponent implements OnInit {
     if (this.path.length === 0) {}
     else {
       this.path.pop()
+      //update to force change detection in child
+      this.path = [].concat(this.path);
       this.currentFolder =  this.path[this.path.length - 1];
       if (this.currentDepth === 1) {
         this.childFolders = this.dataSource.filter((d: Array<string>) => d.length == 1)
@@ -56,9 +60,16 @@ export class FolderComponent implements OnInit {
 
   goTo(item: string) {
     this.path = this.path.slice(0, this.path.indexOf(item) + 1)
-    this.currentFolder =  this.path[this.path.length - 1];
-    this.childFolders = this.dataSource.filter((d: any) => this.arraysEqual(d.slice(0, -1), this.path)).sort()
-  }
+    //update to force change detection in child
+    this.path = [].concat(this.path);
+    if (item === 'root') {
+      this.childFolders = this.dataSource.filter((d: Array<string>) => d.length == 1)
+      this.currentFolder = "root"
+    } else {
+      this.currentFolder = this.path[this.path.length - 1];
+      this.childFolders = this.dataSource.filter((d: any) => this.arraysEqual(d.slice(0, -1), this.path)).sort()
+    }
+    }
 
   arraysEqual(a1: any,a2: any) {
     /* WARNING: arrays must not contain {objects} or behavior may be undefined */
@@ -66,5 +77,7 @@ export class FolderComponent implements OnInit {
   }
 
 
-
+  select(object: any) {
+    console.log(object)
+  }
 }

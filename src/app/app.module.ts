@@ -25,6 +25,8 @@ import config from '../aws-exports';
 import {CanActivateAuth} from "./can-activate-auth";
 import { NavComponent } from './nav/nav.component';
 import {httpInterceptorProviders} from "./http-interceptors";
+import {ImageService} from "./s3-image/s3-image.service";
+import { EventComponent } from './event/event.component';
 
 Amplify.configure(config);
 
@@ -38,7 +40,8 @@ Amplify.configure(config);
     DndComponent,
     IndexComponent,
     LoginComponent,
-    NavComponent
+    NavComponent,
+    EventComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ Amplify.configure(config);
   providers: [
     TableService,
     FolderService,
+    ImageService,
     httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
