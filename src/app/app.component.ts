@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import {Amplify, Auth} from "aws-amplify";
+import { AuthenticatorService } from "@aws-amplify/ui-angular";
+import awsExports from "../aws-exports";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'mountain-angular';
+  title = "MountainDogAngular";
 }

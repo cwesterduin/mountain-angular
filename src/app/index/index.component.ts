@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticatorService} from "@aws-amplify/ui-angular";
+import awsExports from "../../aws-exports";
+import {Amplify} from "aws-amplify";
 
 @Component({
   selector: 'app-index',
@@ -7,7 +10,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndexComponent implements OnInit {
 
-  constructor() { }
+  constructor(public authenticator: AuthenticatorService) {
+    Amplify.configure(awsExports);
+  }
 
   ngOnInit(): void {
   }

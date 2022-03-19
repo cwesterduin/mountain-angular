@@ -1,0 +1,14 @@
+<h1>Angular Router App</h1>
+<amplify-authenticator data-signIn=(authenticated) [loginMechanisms]="['username']" [hideSignUp]="true">
+  <ng-template
+    amplifySlot="authenticated"
+    let-user="user"
+  >
+    <h2>Welcome, {{ user.username }}!</h2>
+    <button (click)="signOut()">Sign Out</button>
+    <ul>
+      <li><a routerLink="/first-component" routerLinkActive="active">First Component</a></li>
+      <li><a routerLink="/second-component" routerLinkActive="active">Second Component</a></li>
+    </ul>
+  </ng-template>
+</amplify-authenticator>

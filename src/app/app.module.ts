@@ -8,7 +8,8 @@ import {MatTableModule} from "@angular/material/table";
 import { HttpClientModule } from '@angular/common/http';
 import {TableService} from "./table/table.service";
 import { FolderComponent } from './folder/folder.component';
-import {FolderService} from "./folder/folder.service";
+import { FolderService } from "./folder/folder.service";
+
 import {MatIconModule} from "@angular/material/icon";
 import { S3ImageComponent } from './s3-image/s3-image.component';
 import { DndComponent } from './dnd/dnd.component';
@@ -21,7 +22,9 @@ import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import { Amplify, Auth } from 'aws-amplify';
 
 import config from '../aws-exports';
-
+import {CanActivateAuth} from "./can-activate-auth";
+import { NavComponent } from './nav/nav.component';
+import {httpInterceptorProviders} from "./http-interceptors";
 
 Amplify.configure(config);
 
@@ -34,7 +37,8 @@ Amplify.configure(config);
     S3ImageComponent,
     DndComponent,
     IndexComponent,
-    LoginComponent
+    LoginComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,8 @@ Amplify.configure(config);
   ],
   providers: [
     TableService,
-    FolderService
+    FolderService,
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

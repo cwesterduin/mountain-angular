@@ -32,7 +32,6 @@ export class FolderComponent implements OnInit {
           this.currentFolder = "root"
         })
 
-    console.log(this.session)
   }
 
   updateFolderData(folder: any){
