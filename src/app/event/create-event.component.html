@@ -1,0 +1,65 @@
+<ng-container *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</ng-container>
+<ng-container *ngIf="found">
+<form [class]="'eventForm'" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+
+<mat-form-field appearance="fill">
+  <mat-label>Name:</mat-label>
+  <input id="name" type="text" formControlName="name" matInput>
+</mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Date: </mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Coordinates:</mat-label>
+    <input id="coordinates" type="text" formControlName="coordinates" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>DescriptionId:</mat-label>
+    <input id="descriptionId" type="text" formControlName="descriptionId" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Description:</mat-label>
+    <textarea  id="description" formControlName="description" matInput></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Rating:</mat-label>
+    <input id="rating" type="number" formControlName="rating" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Elevation:</mat-label>
+    <input id="elevation" type="number" step="1" min="0" max="5" formControlName="elevation" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Distance:</mat-label>
+    <input id="distance" type="number" formControlName="distance" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Media:</mat-label>
+    <input id="media" type="text" formControlName="media" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Trip:</mat-label>
+    <input id="trip" type="text" formControlName="trip" matInput>
+  </mat-form-field>
+
+  <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
+</form>
+</ng-container>
+<ng-container *ngIf="!found && !loading">
+  <span>404</span>
+</ng-container>
+
