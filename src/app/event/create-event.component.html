@@ -47,14 +47,19 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Media:</mat-label>
-    <input id="media" type="text" formControlName="media" matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
     <mat-label>Trip:</mat-label>
     <input id="trip" type="text" formControlName="trip" matInput>
   </mat-form-field>
+
+  <mat-label>Media:</mat-label>
+  <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
+  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let med of media; index as i" cdkDrag>
+      <img src="{{med['path']}}" alt="{{med['id']}}">
+      <p>{{i}}: {{med['id']}}</p>
+    </div>
+  </div>
+
 
   <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
 </form>

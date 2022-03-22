@@ -1,0 +1,11 @@
+.folder-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.folder {
+  margin: 1rem;
+  height: 64px;
+  width: 64px;
+  text-overflow: ellipsis;
+}

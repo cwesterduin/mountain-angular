@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Data, FolderService} from "../folder/folder.service";
 import {ImageService} from "./s3-image.service";
 
@@ -10,9 +10,11 @@ import {ImageService} from "./s3-image.service";
 export class S3ImageComponent implements OnInit, OnChanges {
 
   @Input('path') path = [];
+  @Output() selectCallback: EventEmitter<any> = new EventEmitter();
   constructor(private imageService: ImageService) { }
 
   imageData: Array<any> = []
+  selected: any = undefined
 
   ngOnInit(): void {
   }
@@ -29,4 +31,8 @@ export class S3ImageComponent implements OnInit, OnChanges {
   }
 
 
+  selectThis(img: any, i: any) {
+    this.selectCallback.emit(img)
+    this.selected = img.id;
+  }
 }

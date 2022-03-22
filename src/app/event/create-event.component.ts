@@ -4,6 +4,10 @@ import {ActivatedRoute} from "@angular/router";
 import {Data} from "../folder/folder.service";
 import {EventService} from "./event.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {DndComponent} from "../dnd/dnd.component";
+import {FolderComponent} from "../folder/folder.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-create-event',
@@ -15,13 +19,16 @@ export class CreateEventComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private eventService: EventService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog,
   ) {
   }
 
   public found: boolean | undefined;
   public loading: boolean = true;
   public id: string | undefined
+
+  public media: Array<any> = []
 
   eventForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -32,7 +39,6 @@ export class CreateEventComponent implements OnInit {
     rating: new FormControl(''),
     elevation: new FormControl(''),
     distance: new FormControl(''),
-    media: new FormControl(''),
     trip: new FormControl(''),
   });
 
@@ -56,6 +62,7 @@ export class CreateEventComponent implements OnInit {
       name: data["name"],
       date: data["date"]
     })
+    this.media = data["media"].sort((a: any,b: any) => (a.sortOrder > b.sortOrder) ? 1 : (a.sortOrder === b.sortOrder) ? ((a.sortOrder > b.sortOrder) ? 1 : -1) : -1 )
     this.found = true
     this.loading = false
   }
@@ -88,8 +95,13 @@ export class CreateEventComponent implements OnInit {
     let data = this.eventForm.value
     data.date = Date.parse(this.eventForm.get('date')?.value)
     data.coordinates = null
-    data.media = null
+    data.eventMedia = this.media.map((m,i) => ({
+      ...m,
+      sortOrder: i
+    })
+    )
     data.trip = null
+    data.mapFeatures = null
     if (this.id) {
       data.id = this.id
       this.eventService.postEvent(data).subscribe({
@@ -103,6 +115,28 @@ export class CreateEventComponent implements OnInit {
       });
     }
   }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.media, event.previousIndex, event.currentIndex);
+    console.log(this.media)
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(FolderComponent, {
+      data: {
+        appendMedia: (image: any) => this.appendMedia(image)
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  appendMedia(image: any){
+    this.media.push(image)
+  }
+
 }
 
 

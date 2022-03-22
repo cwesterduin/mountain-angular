@@ -39,6 +39,10 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { MapFeatureComponent } from './map-feature/map-feature.component';
+import {CreateMapFeatureComponent} from "./map-feature/create-map-feature";
+import {MapFeatureService} from "./map-feature/map-feature.service";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 Amplify.configure(config);
 
@@ -54,6 +58,7 @@ Amplify.configure(config);
     NavComponent,
     EventComponent,
     CreateEventComponent,
+    CreateMapFeatureComponent,
     MapFeatureComponent
   ],
   imports: [
@@ -76,13 +81,16 @@ Amplify.configure(config);
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatPaginatorModule,
+    DragDropModule
   ],
   providers: [
     TableService,
     FolderService,
     ImageService,
     EventService,
+    MapFeatureService,
     httpInterceptorProviders
   ],
   bootstrap: [AppComponent]

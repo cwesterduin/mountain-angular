@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FolderService, Data} from "./folder.service";
 import { Amplify, Auth } from 'aws-amplify';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-folder',
@@ -10,7 +11,11 @@ import { Amplify, Auth } from 'aws-amplify';
 export class FolderComponent implements OnInit {
   session: any = Auth.currentSession();
 
-  constructor(private folderService: FolderService) { }
+  @Output() selectImage: EventEmitter<any> = new EventEmitter();
+  constructor(
+    private folderService: FolderService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 
   dataSource : any = [];
 
@@ -21,6 +26,8 @@ export class FolderComponent implements OnInit {
   currentFolder : string | null = null
 
   childFolders : any = []
+
+  selected: any = undefined
 
 
   ngOnInit(): void {
@@ -79,5 +86,19 @@ export class FolderComponent implements OnInit {
 
   select(object: any) {
     console.log(object)
+  }
+
+
+  selectCallback = (args: any): void => {
+    this.selected = args
+    console.log("called back")
+  }
+
+  selectImageSubmit(){
+    this.selectImage.emit()
+  }
+
+  appendImage(selected: any) {
+   this.data.appendMedia(selected)
   }
 }

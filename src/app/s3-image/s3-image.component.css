@@ -1,0 +1,9 @@
+.s3image {
+  border: solid 4px transparent
+}
+
+.selected {
+  border-color: green
+}
+
+
