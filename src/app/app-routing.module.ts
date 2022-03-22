@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import {DndComponent} from "./dnd/dnd.component";
-import {FolderComponent} from "./folder/folder.component";
+import { RouterModule } from '@angular/router';
 import { CanActivateAuth } from "./can-activate-auth";
-import {LoginComponent} from "./login/login.component";
-import {IndexComponent} from "./index/index.component"; // CLI imports router
+import {IndexComponent} from "./index/index.component";
+import {EventComponent} from "./event/event.component";
+import {CreateEventComponent} from "./event/create-event.component"; // CLI imports router
 
 
 // configures NgModule imports and exports
@@ -18,14 +17,22 @@ import {IndexComponent} from "./index/index.component"; // CLI imports router
         pathMatch: 'full'
       },
       {
-        path: 'first-component',
-        component: DndComponent,
-        canActivate: [CanActivateAuth]
-      },
-      {
-        path: 'second-component',
-        component: FolderComponent,
-        canActivate: [CanActivateAuth]
+        path: 'events',
+        canActivate: [CanActivateAuth],
+        children: [
+          {
+            path: '',
+            component: EventComponent,
+          },
+          {
+            path: 'create',
+            component: CreateEventComponent,
+          },
+          {
+            path: 'edit/:id',
+            component: CreateEventComponent,
+          }
+          ]
       }
     ])
   ],

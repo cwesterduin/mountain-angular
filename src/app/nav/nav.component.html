@@ -1,14 +1,17 @@
-<h1>Angular Router App</h1>
 <amplify-authenticator data-signIn=(authenticated) [loginMechanisms]="['username']" [hideSignUp]="true">
   <ng-template
     amplifySlot="authenticated"
-    let-user="user"
   >
-    <h2>Welcome, {{ user.username }}!</h2>
-    <button (click)="signOut()">Sign Out</button>
-    <ul>
-      <li><a routerLink="/first-component" routerLinkActive="active">First Component</a></li>
-      <li><a routerLink="/second-component" routerLinkActive="active">Second Component</a></li>
-    </ul>
+    <mat-toolbar>
+      <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+      <mat-menu #menu="matMenu">
+        <a routerLink="/events" routerLinkActive="active" mat-menu-item>Events</a>
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+      <span>Mountain-Dog Admin</span>
+      <span class="example-spacer"></span>
+      <button mat-button (click)="signOut()">Sign out</button>
+    </mat-toolbar>
   </ng-template>
 </amplify-authenticator>

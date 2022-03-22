@@ -10,10 +10,8 @@ import {MatTableDataSource} from "@angular/material/table";
 })
 export class TableComponent implements OnInit {
 
-  // input data source
   dataSource : any = [];
   tableData: any;
-
   displayedColumns: string[] = ['name', 'coordinates', 'media'];
 
   constructor(private tableService: TableService) { }
