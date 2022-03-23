@@ -16,10 +16,25 @@
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Coordinates:</mat-label>
-    <input id="coordinates" type="text" formControlName="coordinates" matInput>
-  </mat-form-field>
+<!--  <mat-form-field appearance="fill">-->
+<!--    <mat-label>Coordinates:</mat-label>-->
+<!--    <input id="coordinates" type="text" formControlName="coordinates" matInput>-->
+<!--  </mat-form-field>-->
+  <mat-checkbox class="example-margin"
+                [checked]="!!coordinates"
+                (click)="onNoClick($event)"
+  >
+  </mat-checkbox>
+  <input #gpxInput hidden type="file" onclick="this.value=null" (change)="parseGPX($event)" accept=".gpx"/>
+  <button mat-button type="button" (click)="gpxInput.click()">Upload coordinates via GPX</button>
+  <div style="height: 300px; width: 300px"
+       leaflet
+       [leafletOptions]="options"
+       [leafletLayers]="layers"
+       [(leafletCenter)]="center"
+       [leafletFitBounds]="fitToBounds"
+  >
+  </div>
 
   <mat-form-field appearance="fill">
     <mat-label>DescriptionId:</mat-label>
@@ -28,17 +43,21 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Description:</mat-label>
-    <textarea  id="description" formControlName="description" matInput></textarea>
+    <textarea
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="4"
+      id="description" formControlName="description" matInput></textarea>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Rating:</mat-label>
-    <input id="rating" type="number" formControlName="rating" matInput>
+    <input id="rating" type="number" step="1" min="0" max="5"  formControlName="rating" matInput>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Elevation:</mat-label>
-    <input id="elevation" type="number" step="1" min="0" max="5" formControlName="elevation" matInput>
+    <input id="elevation" type="number" formControlName="elevation" matInput>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -55,8 +74,9 @@
   <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
   <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let med of media; index as i" cdkDrag>
-      <img src="{{med['path']}}" alt="{{med['id']}}">
-      <p>{{i}}: {{med['id']}}</p>
+      <button mat-button color="warn" type="button" (click)="removeMedia(med)">x</button>
+      <img src="{{med['path']}}" alt="{{med['mediaId']}}">
+      <p>{{i}}: {{med['mediaId']}}</p>
     </div>
   </div>
 

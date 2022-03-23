@@ -43,6 +43,8 @@ import {CreateMapFeatureComponent} from "./map-feature/create-map-feature";
 import {MapFeatureService} from "./map-feature/map-feature.service";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {LeafletModule} from "@asymmetrik/ngx-leaflet";
 
 Amplify.configure(config);
 
@@ -61,30 +63,32 @@ Amplify.configure(config);
     CreateMapFeatureComponent,
     MapFeatureComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatIconModule,
-    NgxFileDropModule,
-    MatDialogModule,
-    RouterModule,
-    AmplifyAuthenticatorModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatPaginatorModule,
-    DragDropModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatIconModule,
+        NgxFileDropModule,
+        MatDialogModule,
+        RouterModule,
+        AmplifyAuthenticatorModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatMenuModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatPaginatorModule,
+        DragDropModule,
+        MatCheckboxModule,
+        LeafletModule
+    ],
   providers: [
     TableService,
     FolderService,

@@ -43,4 +43,10 @@ export class EventService {
       catchError(this.handleError)
     );
   }
+
+  deleteEventMedia(data: any) {
+    return this.http.delete<any>(this.configUrl + "media/" + data).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

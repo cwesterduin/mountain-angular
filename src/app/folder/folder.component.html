@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>S3 Folders</h2>
+<h2 mat-dialog-title >S3 Folders</h2>
 <!--<button mat-button (click)="goBack()" [disabled]="currentFolder === 'root'">back</button>-->
 <ul>
   <li (click)="goTo('root')" style="display: inline">root</li>
@@ -17,7 +17,7 @@
   <app-s3-image (selectCallback)="selectCallback($event)" [path]="path"></app-s3-image>
 </mat-dialog-content>
 <div>{{selected?.toString()}}</div>
-<mat-dialog-actions align="end">
+<mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button (click)="appendImage(selected)" [mat-dialog-close]="true" cdkFocusInitial>Select image</button>
 </mat-dialog-actions>
