@@ -1,0 +1,19 @@
+<form (keydown.enter)="$event.preventDefault()" [class]="'createForm'" [formGroup]="tripForm" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="standard">
+    <mat-label>Name:</mat-label>
+    <input id="name" type="text" formControlName="name" matInput>
+  </mat-form-field>
+
+  <mat-form-field appearance="standard">
+    <mat-label>Description:</mat-label>
+    <textarea id="description" formControlName="description" matInput></textarea>
+  </mat-form-field>
+
+  <mat-label>Media:</mat-label>
+  <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
+  <img *ngIf="!!primaryImage"  src="{{primaryImage['path']}}">
+
+  <button type="submit" mat-button [disabled]="!tripForm.valid">Submit</button>
+
+</form>

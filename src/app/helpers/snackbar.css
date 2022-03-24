@@ -1,0 +1,19 @@
+::ng-deep.green-snackbar {
+  background-color: green;
+  color: white;
+}
+
+::ng-deep.green-snackbar button {
+  color: white;
+  background: darkgreen;
+}
+
+::ng-deep.red-snackbar {
+  background-color: red;
+  color: white;
+}
+
+::ng-deep.red-snackbar button {
+  color: white;
+  background: darkred;
+}
