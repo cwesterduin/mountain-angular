@@ -35,6 +35,33 @@
        [leafletFitBounds]="fitToBounds"
   >
   </div>
+  <mat-form-field class="example-chip-list" appearance="standard">
+    <mat-label>Map features:</mat-label>
+    <mat-chip-list #chipList aria-label="Map feature selection">
+      <mat-chip
+        *ngFor="let feature of mapFeatures"
+        (removed)="remove(feature)">
+        {{feature["name"]}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input
+        placeholder="New feature..."
+        #featureInput
+        [formControl]="featureCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      >
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let feature of filteredMapFeatures | async" [value]="feature">
+        {{feature["name"]}}
+        <ng-template [ngIf]="feature['type']">({{ feature['type']}})</ng-template>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 
   <mat-form-field appearance="standard">
     <mat-label>DescriptionId:</mat-label>
@@ -79,7 +106,6 @@
       <p>{{i}}: {{med['mediaId']}}</p>
     </div>
   </div>
-
 
   <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
 </form>

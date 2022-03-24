@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from "@angular/router";
 import {EventService} from "./event.service";
@@ -7,15 +7,21 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {FolderComponent} from "../folder/folder.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {take} from 'rxjs/operators';
+import {map, startWith, take} from 'rxjs/operators';
 import xml2js from 'xml2js';
 import {
+  icon,
   LatLng,
   LatLngBounds,
-  Layer,
+  Layer, marker,
   polyline,
   tileLayer
 } from "leaflet";
+import {Observable} from "rxjs";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {MatChipInputEvent} from "@angular/material/chips";
+import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
+import {MapFeatureService} from "../map-feature/map-feature.service";
 
 @Component({
   selector: 'app-create-event',
@@ -24,22 +30,29 @@ import {
 })
 export class CreateEventComponent implements OnInit {
 
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  featureCtrl = new FormControl();
+  filteredMapFeatures: Observable<any[]>;
+  mapFeatures: any[] = []
+  allMapFeatures: any[] = [];
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private eventService: EventService,
+    private mapFeatureService: MapFeatureService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
   ) {
   }
 
+  @ViewChild('featureInput') featureInput: ElementRef<HTMLInputElement>;
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
-
 
   public found: boolean | undefined;
   public loading: boolean = true;
@@ -67,6 +80,10 @@ export class CreateEventComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.filteredMapFeatures = this.featureCtrl.valueChanges.pipe(
+      startWith(null),
+      map((feature: any | null) => (feature ? this._filter(feature) : this.allMapFeatures.slice())),
+    );
     this.activatedRoute.params.subscribe((params: { [x: string]: any; }) => {
       this.id = params["id"]
     })
@@ -86,6 +103,10 @@ export class CreateEventComponent implements OnInit {
       this.loading = false
       this.found = true
     }
+    this.mapFeatureService.getMapFeatures().subscribe({
+      next: this.handleFeatureResponse.bind(this),
+      error: this.handleError.bind(this),
+    })
   }
 
   handleResponse(data: any) {
@@ -99,14 +120,31 @@ export class CreateEventComponent implements OnInit {
       distance: data["distance"]
     })
     this.coordinates = data["coordinates"]
+    this.mapFeatures = data["mapFeatures"]
     if (this.coordinates) {
       this.layers = [polyline(this.coordinates.map(m => new LatLng(m[0], m[1])))]
       this.fitToBounds = polyline(this.coordinates.map(m => new LatLng(m[0], m[1]))).getBounds()
     }
+    this.mapFeatures.forEach((mf: any) => {
+      this.layers.push(marker(mf.coordinate, {
+          title: mf.id,
+          icon: icon({
+            iconSize: [ 25, 41 ],
+            iconAnchor: [ 13, 41 ],
+            iconUrl: 'leaflet/marker-icon.png',
+            shadowUrl: 'leaflet/marker-shadow.png'
+          })
+        })
+      )
+    })
 
     this.media = data["media"].sort((a: any, b: any) => (a.sortOrder > b.sortOrder) ? 1 : (a.sortOrder === b.sortOrder) ? ((a.sortOrder > b.sortOrder) ? 1 : -1) : -1)
     this.found = true
     this.loading = false
+  }
+
+  handleFeatureResponse(data: any) {
+    this.allMapFeatures = data
   }
 
   handlePostResponse(data: any) {
@@ -136,10 +174,6 @@ export class CreateEventComponent implements OnInit {
   }
 
 
-  //   })
-  // }
-
-
   onSubmit() {
     let data = this.eventForm.value
     data.date = Date.parse(this.eventForm.get('date')?.value)
@@ -150,7 +184,7 @@ export class CreateEventComponent implements OnInit {
       })
     )
     data.trip = null
-    data.mapFeatures = null
+    data.mapFeatures = this.mapFeatures
     if (this.id) {
       data.id = this.id
       this.eventService.postEvent(data).subscribe({
@@ -238,6 +272,53 @@ export class CreateEventComponent implements OnInit {
   }
 
 
+  // for autocomplete chips
+
+
+  remove(feature: any): void {
+    const index = this.mapFeatures.findIndex((mf:any) => mf.id === feature.id);
+
+    if (index >= 0) {
+      this.mapFeatures.splice(index, 1);
+      const layersIndex = this.layers.findIndex((l:any) => l.options.title === feature.id)
+      if (layersIndex >= 0){
+        this.layers.splice(layersIndex, 1);
+      }
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    if (this.mapFeatures.findIndex((mf:any) => mf.id === event.option.value.id) >= 0) {
+      this._snackBar.open("You can't select the same map feature twice.", "close", {
+        panelClass: ['red-snackbar']
+      });
+    } else {
+      this.mapFeatures.push(event.option.value);
+      this.featureInput.nativeElement.value = '';
+      this.featureCtrl.setValue(null);
+      this.layers.push(marker(event.option.value.coordinate, {
+            title: event.option.value.id,
+            icon: icon({
+              iconSize: [ 25, 41 ],
+              iconAnchor: [ 13, 41 ],
+              iconUrl: 'leaflet/marker-icon.png',
+              shadowUrl: 'leaflet/marker-shadow.png'
+            })
+          })
+        )
+
+    }
+  }
+
+  private _filter(value: any): string[] {
+    let filterValue: any
+    if (value.name) {
+      filterValue = value.name.toLowerCase();
+    } else {
+      filterValue = value.toLowerCase();
+    }
+    return this.allMapFeatures.filter(feature => feature.name.toLowerCase().includes(filterValue));
+  }
 
 }
 
