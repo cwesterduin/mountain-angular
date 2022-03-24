@@ -1,16 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MapFeatureService} from "./map-feature.service";
 import {FolderComponent} from "../folder/folder.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Icon, icon, latLng, LatLng, LatLngBounds, Layer, marker, polyline, tileLayer} from "leaflet";
+import {icon, latLng, LatLng, LatLngBounds, Layer, marker, tileLayer} from "leaflet";
+import {ResponseHelpers} from "../helpers/responseHelpers"
 
 @Component({
   selector: 'app-create-map-feature',
   templateUrl: './create-map-feature.html',
-  styleUrls: ['../event/event.component.css', './map-feature.component.css']
+  styleUrls: ['./map-feature.component.css', '../helpers/snackbar.css']
 })
 export class CreateMapFeatureComponent implements OnInit {
 
@@ -19,6 +20,7 @@ export class CreateMapFeatureComponent implements OnInit {
     private mapFeatureService: MapFeatureService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
+    private router: Router
   ) {
   }
 
@@ -49,7 +51,7 @@ export class CreateMapFeatureComponent implements OnInit {
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '...'}),
       ],
       zoom: 5,
-      center: [55,-3]
+      center: [55, -3]
     };
     this.activatedRoute.params.subscribe((params: { [x: string]: any; }) => {
       this.id = params["id"]
@@ -76,13 +78,14 @@ export class CreateMapFeatureComponent implements OnInit {
       munroOrder: data["munroOrder"]
     })
     this.media = data["primaryImage"]
-    this.media.path = "https://" + this.media.bucketName + ".s3." + this.media.region + ".amazonaws.com/" + this.media.path
-
+    if (this.media) {
+      this.media.path = "https://" + this.media.bucketName + ".s3." + this.media.region + ".amazonaws.com/" + this.media.path
+    }
     if (data.coordinate) {
       this.layers = [marker(data.coordinate, {
         icon: icon({
-          iconSize: [ 25, 41 ],
-          iconAnchor: [ 13, 41 ],
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
           iconUrl: 'leaflet/marker-icon.png',
           shadowUrl: 'leaflet/marker-shadow.png'
         })
@@ -96,17 +99,6 @@ export class CreateMapFeatureComponent implements OnInit {
     this.loading = false
   }
 
-  handlePostResponse(data: any) {
-    this._snackBar.open("success", "close", {
-      panelClass: ['green-snackbar']
-    });
-  }
-
-  handlePostError(error: any) {
-    this._snackBar.open(error.message, "close", {
-      panelClass: ['red-snackbar']
-    });
-  }
 
   handleError(error: any) {
     if (error.message == "404") {
@@ -118,20 +110,16 @@ export class CreateMapFeatureComponent implements OnInit {
   onSubmit() {
     let data = this.mapFeatureForm.value
     data.coordinate = [data.lat, data.lng]
-    data.primaryImage = this.media
+    data.media = this.media
     if (this.id) {
       data.id = this.id
-      this.mapFeatureService.postMapFeature(data).subscribe({
-        next: this.handlePostResponse.bind(this),
-        error: this.handlePostError.bind(this),
-      });
-    } else {
-      this.mapFeatureService.postMapFeature(data).subscribe({
-        next: this.handlePostResponse.bind(this),
-        error: this.handlePostError.bind(this),
-      });
     }
+    this.mapFeatureService.postMapFeature(data).subscribe({
+      next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/map-features'),
+      error: (error) =>  ResponseHelpers.handlePostError(error, this._snackBar),
+    });
   }
+
 
   openDialog() {
     const dialogRef = this.dialog.open(FolderComponent, {
@@ -153,8 +141,8 @@ export class CreateMapFeatureComponent implements OnInit {
     if (this.mapFeatureForm.value.lat && this.mapFeatureForm.value.lng) {
       this.layers = [marker([this.mapFeatureForm.value.lat, this.mapFeatureForm.value.lng], {
         icon: icon({
-          iconSize: [ 25, 41 ],
-          iconAnchor: [ 13, 41 ],
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
           iconUrl: 'leaflet/marker-icon.png',
           shadowUrl: 'leaflet/marker-shadow.png'
         })

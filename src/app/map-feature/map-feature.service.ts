@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {HttpClient } from '@angular/common/http';
 import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
+import {ResponseHelpers} from "../helpers/responseHelpers";
+import {environment} from "../../environments/environment";
 
 export interface Data extends Array<any>{
 }
@@ -12,34 +13,21 @@ export class MapFeatureService {
     private http: HttpClient
   ) { }
 
-  private handleError(error: HttpErrorResponse) {
-    let msg = error.status
-    if (msg === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    }
-    else {
-      console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
-    }
-    return throwError(() => new Error(msg.toString()));
-  }
-
-  configUrl = 'http://localhost:8080/map-features/';
+  configUrl = environment.url + '/map-features/';
 
   getMapFeatures() {
-    return this.http.get<Data>(this.configUrl);
+    return this.http.get<any>(this.configUrl);
   }
 
   getOneMapFeature(id: string) {
-    return this.http.get<Data>(this.configUrl + id).pipe(
-      catchError(this.handleError)
+    return this.http.get<any>(this.configUrl + id).pipe(
+      catchError(ResponseHelpers.handleError)
     );
   }
 
   postMapFeature(data: any) {
     return this.http.post<any>(this.configUrl, data).pipe(
-      catchError(this.handleError)
+      catchError(ResponseHelpers.handleError)
     );
   }
 }

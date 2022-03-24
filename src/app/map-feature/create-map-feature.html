@@ -2,7 +2,7 @@
   <mat-spinner></mat-spinner>
 </ng-container>
 <ng-container *ngIf="found">
-  <form [class]="'mapFeatureForm'" [formGroup]="mapFeatureForm" (ngSubmit)="onSubmit()">
+  <form [class]="'createForm'" (keydown.enter)="$event.preventDefault()" [formGroup]="mapFeatureForm" (ngSubmit)="onSubmit()">
 
     <mat-form-field appearance="standard">
       <mat-label>Name:</mat-label>

@@ -5,6 +5,8 @@
     <mat-toolbar>
       <button mat-button [matMenuTriggerFor]="menu">Menu</button>
       <mat-menu #menu="matMenu">
+        <a routerLink="/" routerLinkActive="active" mat-menu-item>Home</a>
+        <a routerLink="/trips" routerLinkActive="active" mat-menu-item>Trips</a>
         <a routerLink="/events" routerLinkActive="active" mat-menu-item>Events</a>
         <a routerLink="/map-features" routerLinkActive="active" mat-menu-item>Map features</a>
       </mat-menu>

@@ -2,113 +2,124 @@
   <mat-spinner></mat-spinner>
 </ng-container>
 <ng-container *ngIf="found">
-<form [class]="'eventForm'" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <form [class]="'createForm'" (keydown.enter)="$event.preventDefault()" [formGroup]="eventForm"
+        (ngSubmit)="onSubmit()">
 
-<mat-form-field appearance="standard">
-  <mat-label>Name:</mat-label>
-  <input id="name" type="text" formControlName="name" matInput>
-</mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Name:</mat-label>
+      <input id="name" type="text" formControlName="name" matInput>
+    </mat-form-field>
 
-  <mat-form-field appearance="standard">
-    <mat-label>Date: </mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Date:</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
-<!--  <mat-form-field appearance="standard">-->
-<!--    <mat-label>Coordinates:</mat-label>-->
-<!--    <input id="coordinates" type="text" formControlName="coordinates" matInput>-->
-<!--  </mat-form-field>-->
-  <mat-checkbox class="example-margin"
-                [checked]="!!coordinates"
-                (click)="onNoClick($event)"
-  >
-  </mat-checkbox>
-  <input #gpxInput hidden type="file" onclick="this.value=null" (change)="parseGPX($event)" accept=".gpx"/>
-  <button mat-button type="button" (click)="gpxInput.click()">Upload coordinates via GPX</button>
-  <div style="height: 300px; width: 300px"
-       leaflet
-       [leafletOptions]="options"
-       [leafletLayers]="layers"
-       [(leafletCenter)]="center"
-       [leafletFitBounds]="fitToBounds"
-  >
-  </div>
-  <mat-form-field class="example-chip-list" appearance="standard">
-    <mat-label>Map features:</mat-label>
-    <mat-chip-list #chipList aria-label="Map feature selection">
-      <mat-chip
-        *ngFor="let feature of mapFeatures"
-        (removed)="remove(feature)">
-        {{feature["name"]}}
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
-      <input
-        placeholder="New feature..."
-        #featureInput
-        [formControl]="featureCtrl"
-        [matAutocomplete]="auto"
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      >
-    </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let feature of filteredMapFeatures | async" [value]="feature">
-        {{feature["name"]}}
-        <ng-template [ngIf]="feature['type']">({{ feature['type']}})</ng-template>
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-
-  <mat-form-field appearance="standard">
-    <mat-label>DescriptionId:</mat-label>
-    <input id="descriptionId" type="text" formControlName="descriptionId" matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="standard">
-    <mat-label>Description:</mat-label>
-    <textarea
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="4"
-      id="description" formControlName="description" matInput></textarea>
-  </mat-form-field>
-
-  <mat-form-field appearance="standard">
-    <mat-label>Rating:</mat-label>
-    <input id="rating" type="number" step="1" min="0" max="5"  formControlName="rating" matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="standard">
-    <mat-label>Elevation:</mat-label>
-    <input id="elevation" type="number" formControlName="elevation" matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="standard">
-    <mat-label>Distance:</mat-label>
-    <input id="distance" type="number" formControlName="distance" matInput>
-  </mat-form-field>
-
-  <mat-form-field appearance="standard">
-    <mat-label>Trip:</mat-label>
-    <input id="trip" type="text" formControlName="trip" matInput>
-  </mat-form-field>
-
-  <mat-label>Media:</mat-label>
-  <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let med of media; index as i" cdkDrag>
-      <button mat-button color="warn" type="button" (click)="removeMedia(med)">x</button>
-      <img src="{{med['path']}}" alt="{{med['mediaId']}}">
-      <p>{{i}}: {{med['mediaId']}}</p>
+    <mat-checkbox class="example-margin"
+                  [checked]="!!coordinates"
+                  (click)="onNoClick($event)"
+    >
+    </mat-checkbox>
+    <input #gpxInput hidden type="file" onclick="this.value=null" (change)="parseGPX($event)" accept=".gpx"/>
+    <button mat-button type="button" (click)="gpxInput.click()">Upload coordinates via GPX</button>
+    <div style="height: 300px; width: 300px"
+         leaflet
+         [leafletOptions]="options"
+         [leafletLayers]="layers"
+         [(leafletCenter)]="center"
+         [leafletFitBounds]="fitToBounds"
+    >
     </div>
-  </div>
 
-  <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
-</form>
+
+    <mat-form-field class="example-chip-list" appearance="standard">
+      <mat-label>Map features:</mat-label>
+      <mat-chip-list #chipList aria-label="Map feature selection">
+        <mat-chip
+          *ngFor="let feature of mapFeatures"
+          (removed)="remove(feature)">
+          {{feature["name"]}}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        <input
+          placeholder="New feature..."
+          #featureInput
+          [formControl]="featureCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        >
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let feature of filteredMapFeatures | async" [value]="feature">
+          {{feature["name"]}}
+          <ng-template [ngIf]="feature['type']">({{ feature['type']}})</ng-template>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>DescriptionId:</mat-label>
+      <input id="descriptionId" type="text" formControlName="descriptionId" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Description:</mat-label>
+      <textarea
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="4"
+        id="description" formControlName="description" matInput></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Rating:</mat-label>
+      <input id="rating" type="number" step="1" min="0" max="5" formControlName="rating" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Elevation:</mat-label>
+      <input id="elevation" type="number" formControlName="elevation" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Distance:</mat-label>
+      <input id="distance" type="number" formControlName="distance" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="standard">
+      <mat-label>Trip:</mat-label>
+      <input type="text"
+             matInput
+             [formControl]="tripControl"
+             [matAutocomplete]="auto2"
+      >
+      <mat-autocomplete
+        [displayWith]="displayFn"
+        #auto2="matAutocomplete"
+      >
+        <mat-option *ngFor="let trip of filteredTrips | async" [value]="trip">
+          {{trip["name"]}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-label>Media:</mat-label>
+    <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let med of media; index as i" cdkDrag>
+        <button mat-button color="warn" type="button" (click)="removeMedia(med)">x</button>
+        <img src="{{med['path']}}" alt="{{med['mediaId']}}">
+        <p>{{i}}: {{med['mediaId']}}</p>
+      </div>
+    </div>
+
+    <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
+  </form>
 </ng-container>
 <ng-container *ngIf="!found && !loading">
   <span>404</span>

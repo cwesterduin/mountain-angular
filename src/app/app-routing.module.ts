@@ -5,7 +5,9 @@ import {IndexComponent} from "./index/index.component";
 import {EventComponent} from "./event/event.component";
 import {CreateEventComponent} from "./event/create-event.component";
 import {MapFeatureComponent} from "./map-feature/map-feature.component";
-import {CreateMapFeatureComponent} from "./map-feature/create-map-feature"; // CLI imports router
+import {CreateMapFeatureComponent} from "./map-feature/create-map-feature";
+import {TripComponent} from "./trip/trip.component";
+import {CreateTripComponent} from "./trip/create-trip.component"; // CLI imports router
 
 
 // configures NgModule imports and exports
@@ -51,6 +53,24 @@ import {CreateMapFeatureComponent} from "./map-feature/create-map-feature"; // C
           {
             path: 'edit/:id',
             component: CreateMapFeatureComponent,
+          }
+        ]
+      },
+      {
+        path: 'trips',
+        canActivate: [CanActivateAuth],
+        children: [
+          {
+            path: '',
+            component: TripComponent,
+          },
+          {
+            path: 'create',
+            component: CreateTripComponent,
+          },
+          {
+            path: 'edit/:id',
+            component: CreateTripComponent,
           }
         ]
       }

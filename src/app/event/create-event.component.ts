@@ -22,11 +22,13 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {MapFeatureService} from "../map-feature/map-feature.service";
+import {TripService} from "../trip/trip.service";
+import {MatOptionSelectionChange} from "@angular/material/core";
 
 @Component({
   selector: 'app-create-event',
   templateUrl: './create-event.component.html',
-  styleUrls: ['./event.component.css']
+  styleUrls: ['./event.component.css', '../helpers/snackbar.css']
 })
 export class CreateEventComponent implements OnInit {
 
@@ -36,10 +38,15 @@ export class CreateEventComponent implements OnInit {
   mapFeatures: any[] = []
   allMapFeatures: any[] = [];
 
+  allTrips: any[] = [];
+  tripControl = new FormControl();
+  filteredTrips: Observable<any[]>;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private eventService: EventService,
     private mapFeatureService: MapFeatureService,
+    private tripService: TripService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
     private _ngZone: NgZone,
@@ -66,6 +73,7 @@ export class CreateEventComponent implements OnInit {
   public center: LatLng = new LatLng(55, -3)
   public fitToBounds: LatLngBounds
 
+
   eventForm = new FormGroup({
     name: new FormControl('', Validators.required),
     date: new FormControl(''),
@@ -84,9 +92,10 @@ export class CreateEventComponent implements OnInit {
       startWith(null),
       map((feature: any | null) => (feature ? this._filter(feature) : this.allMapFeatures.slice())),
     );
-    this.activatedRoute.params.subscribe((params: { [x: string]: any; }) => {
-      this.id = params["id"]
-    })
+    this.filteredTrips = this.tripControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterTrips(value)),
+    );
     this.options = {
       layers: [
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: '...'}),
@@ -94,6 +103,9 @@ export class CreateEventComponent implements OnInit {
       zoom: 5,
       center: [55,-3]
     };
+    this.activatedRoute.params.subscribe((params: { [x: string]: any; }) => {
+      this.id = params["id"]
+    })
     if (this.id) {
       this.eventService.getOneEvent(this.id).subscribe({
         next: this.handleResponse.bind(this),
@@ -107,6 +119,10 @@ export class CreateEventComponent implements OnInit {
       next: this.handleFeatureResponse.bind(this),
       error: this.handleError.bind(this),
     })
+    this.tripService.getTrips().subscribe({
+      next: this.handleTripResponse.bind(this),
+      error: this.handleError.bind(this),
+    })
   }
 
   handleResponse(data: any) {
@@ -117,8 +133,9 @@ export class CreateEventComponent implements OnInit {
       description: data["description"],
       rating: data["rating"],
       elevation: data["elevation"],
-      distance: data["distance"]
+      distance: data["distance"],
     })
+    this.tripControl.setValue(data["trip"])
     this.coordinates = data["coordinates"]
     this.mapFeatures = data["mapFeatures"]
     if (this.coordinates) {
@@ -145,6 +162,10 @@ export class CreateEventComponent implements OnInit {
 
   handleFeatureResponse(data: any) {
     this.allMapFeatures = data
+  }
+
+  handleTripResponse(data: any) {
+    this.allTrips = data
   }
 
   handlePostResponse(data: any) {
@@ -183,21 +204,15 @@ export class CreateEventComponent implements OnInit {
         sortOrder: i
       })
     )
-    data.trip = null
     data.mapFeatures = this.mapFeatures
+    data.trip = this.tripControl.value
     if (this.id) {
       data.id = this.id
-      this.eventService.postEvent(data).subscribe({
-        next: this.handlePostResponse.bind(this),
-        error: this.handlePostError.bind(this),
-      });
-    } else {
-      this.eventService.postEvent(data).subscribe({
-        next: this.handlePostResponse.bind(this),
-        error: this.handlePostError.bind(this),
-
-      });
     }
+      this.eventService.postEvent(data).subscribe({
+        next: this.handlePostResponse.bind(this),
+        error: this.handlePostError.bind(this),
+      });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -246,7 +261,6 @@ export class CreateEventComponent implements OnInit {
   }
 
   parseGPX(fileInputEvent: any) {
-
     const fileReader = new FileReader();
     let text: string | ArrayBuffer | null = "";
     fileReader.onload = () => {
@@ -271,8 +285,9 @@ export class CreateEventComponent implements OnInit {
     event.preventDefault();
   }
 
-
-  // for autocomplete chips
+  compareTrips = (o1: any, o2: any) => {
+    return o1.id === o2.id
+  }
 
 
   remove(feature: any): void {
@@ -319,6 +334,21 @@ export class CreateEventComponent implements OnInit {
     }
     return this.allMapFeatures.filter(feature => feature.name.toLowerCase().includes(filterValue));
   }
+
+  private _filterTrips(value: any): string[] {
+    let filterValue: any
+    if (value.name) {
+      filterValue = value.name.toLowerCase()
+    } else {
+      filterValue = value.toLowerCase();
+    }
+    return this.allTrips.filter((trip: any) => trip.name.toLowerCase().includes(filterValue));
+  }
+
+  displayFn(value: any) {
+    return value ? value.name : undefined;
+  }
+
 
 }
 

@@ -31,7 +31,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatDialogModule} from "@angular/material/dialog";
 import {EventService} from "./event/event.service";
 import {CreateEventComponent} from "./event/create-event.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
@@ -47,6 +47,10 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {LeafletModule} from "@asymmetrik/ngx-leaflet";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatChipsModule} from "@angular/material/chips";
+import { TripComponent } from './trip/trip.component';
+import { CreateTripComponent } from './trip/create-trip.component';
+import {TripService} from "./trip/trip.service";
+import {MatSelectModule} from "@angular/material/select";
 
 Amplify.configure(config);
 
@@ -63,7 +67,9 @@ Amplify.configure(config);
     EventComponent,
     CreateEventComponent,
     CreateMapFeatureComponent,
-    MapFeatureComponent
+    MapFeatureComponent,
+    TripComponent,
+    CreateTripComponent
   ],
   imports: [
     BrowserModule,
@@ -91,13 +97,16 @@ Amplify.configure(config);
     MatCheckboxModule,
     LeafletModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSelectModule,
+    FormsModule
   ],
   providers: [
     TableService,
     FolderService,
     ImageService,
     EventService,
+    TripService,
     MapFeatureService,
     httpInterceptorProviders
   ],
