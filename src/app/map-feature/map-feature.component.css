@@ -4,3 +4,8 @@
   align-items: flex-start;
   padding: 1rem;
 }
+
+img {
+  width: auto;
+  height: 64px;
+}

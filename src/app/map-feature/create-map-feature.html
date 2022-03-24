@@ -4,41 +4,54 @@
 <ng-container *ngIf="found">
   <form [class]="'mapFeatureForm'" [formGroup]="mapFeatureForm" (ngSubmit)="onSubmit()">
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="standard">
       <mat-label>Name:</mat-label>
       <input id="name" type="text" formControlName="name" matInput>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="standard">
       <mat-label>Type:</mat-label>
       <input id="type" type="text" formControlName="type" matInput>
     </mat-form-field>
 
 
-    <mat-form-field appearance="fill">
-      <mat-label>Coordinate:</mat-label>
-      <input id="coordinate" type="text" formControlName="coordinate" matInput>
+    <mat-form-field appearance="standard">
+      <mat-label>Lat:</mat-label>
+      <input (change)="updateMarker()" step=".1" id="lat" type="number" formControlName="lat" matInput>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="standard">
+      <mat-label>Lng:</mat-label>
+      <input (change)="updateMarker()" step=".1" id="lng" type="number" formControlName="lng" matInput>
+    </mat-form-field>
+
+    <div style="height: 300px; width: 300px"
+         leaflet
+         [leafletOptions]="options"
+         [leafletLayers]="layers"
+         [(leafletCenter)]="center"
+         [leafletFitBounds]="fitToBounds"
+    >
+    </div>
+
+    <mat-form-field appearance="standard">
       <mat-label>Translation:</mat-label>
       <input id="translation" type="text" formControlName="translation" matInput>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="standard">
       <mat-label>Pronunciation:</mat-label>
       <input id="pronunciation" type="text" formControlName="pronunciation" matInput>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="standard">
       <mat-label>Munro Order:</mat-label>
       <input id="munroOrder" type="text" formControlName="munroOrder" matInput>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Media:</mat-label>
-      <input id="image" type="text" formControlName="image" matInput>
-    </mat-form-field>
+    <mat-label>Media:</mat-label>
+    <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
+    <img *ngIf="!!media"  src="{{media['path']}}">
 
 
     <button type="submit" mat-button [disabled]="!mapFeatureForm.valid">Submit</button>

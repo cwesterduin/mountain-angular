@@ -14,7 +14,6 @@ import {Router} from "@angular/router";
 export class EventComponent implements OnInit {
 
   constructor(
-    public dialog: MatDialog,
     private eventService: EventService,
     private router: Router,
   ) { }
@@ -30,18 +29,10 @@ export class EventComponent implements OnInit {
       })
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DndComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
   async goToEdit(elementElement: any) {
-    console.log(elementElement)
     await this.router.navigate(["/events/edit/" + elementElement])
   }
+
 }
 
 

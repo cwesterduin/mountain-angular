@@ -1,3 +1,12 @@
-<p>map-feature works!</p>
-<li><a routerLink="create">create</a></li>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
+    <th mat-header-cell *matHeaderCellDef>{{column}}</th>
+    <td (dblclick)="goToEdit(element['id'])" mat-cell *matCellDef="let element">{{element[column]}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
 <router-outlet></router-outlet>
