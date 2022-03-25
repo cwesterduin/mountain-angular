@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Optional, Output} from '@angular/core';
 import {Data, FolderService} from "../folder/folder.service";
 import {ImageService} from "./s3-image.service";
 
@@ -10,11 +10,13 @@ import {ImageService} from "./s3-image.service";
 export class S3ImageComponent implements OnInit, OnChanges {
 
   @Input('path') path = [];
+  @Optional() @Input('multiselect') multiselect: boolean;
   @Output() selectCallback: EventEmitter<any> = new EventEmitter();
+  @Output() deselectCallback: EventEmitter<any> = new EventEmitter();
   constructor(private imageService: ImageService) { }
 
   imageData: Array<any> = []
-  selected: any = undefined
+  selected: Array<string> = []
 
   ngOnInit(): void {
   }
@@ -32,7 +34,23 @@ export class S3ImageComponent implements OnInit, OnChanges {
 
 
   selectThis(img: any, i: any) {
-    this.selectCallback.emit(img)
-    this.selected = img.id;
+    if (this.multiselect) {
+      if (!this.selected.includes(img.id)) {
+        this.selectCallback.emit(img)
+        this.selected.push(img.id)
+      } else {
+        let selectedIndex = this.selected.findIndex((im: any) => im == img.id)
+        this.selected.splice(selectedIndex, 1);
+        this.deselectCallback.emit(img)
+      }
+    } else {
+      if (this.selected != img.id) {
+        this.selectCallback.emit(img)
+        this.selected = [img.id];
+      } else {
+        this.deselectCallback.emit(img)
+        this.selected = []
+      }
+    }
   }
 }

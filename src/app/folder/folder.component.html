@@ -1,4 +1,4 @@
-<h2 mat-dialog-title >S3 Folders</h2>
+<h2 mat-dialog-title>S3 Folders</h2>
 <!--<button mat-button (click)="goBack()" [disabled]="currentFolder === 'root'">back</button>-->
 <ul>
   <li (click)="goTo('root')" style="display: inline">root</li>
@@ -6,18 +6,26 @@
   <li (click)="goTo(string)" style="display: inline" *ngFor="let string of path">{{string}}/</li>
 </ul>
 <mat-dialog-content class="mat-typography folder-container">
-  <div class="folder"
-       *ngFor="let folder of childFolders"
-       (click)="select(folder[folder.length - 1])"
-       (dblclick)="updateFolderData(folder)"
-  >
-    <mat-icon aria-hidden="false" aria-label="Example home icon">folder</mat-icon>
-    <p>{{folder[folder.length - 1]}}</p>
-  </div>
-  <app-s3-image (selectCallback)="selectCallback($event)" [path]="path"></app-s3-image>
+  <app-dnd style="width: 100%">
+    <div class="folder"
+         *ngFor="let folder of childFolders"
+         (click)="select(folder[folder.length - 1])"
+         (dblclick)="updateFolderData(folder)"
+    >
+      <mat-icon aria-hidden="false" aria-label="Example home icon">folder</mat-icon>
+      <p>{{folder[folder.length - 1]}}</p>
+    </div>
+    <app-s3-image [multiselect]="data?.multiselect" (deselectCallback)="deselectCallback($event)" (selectCallback)="selectCallback($event)" [path]="path"></app-s3-image>
+  </app-dnd>
 </mat-dialog-content>
 <div>{{selected?.toString()}}</div>
-<mat-dialog-actions>
+<mat-dialog-actions *ngIf="!!data">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button (click)="appendImage(selected)" [mat-dialog-close]="true" cdkFocusInitial>Select image</button>
 </mat-dialog-actions>
+<ng-container *ngIf="!data && !!selected">
+  <mat-form-field appearance="standard">
+    <mat-label>Description:</mat-label>
+    <input matInput type="text">
+  </mat-form-field>
+</ng-container>

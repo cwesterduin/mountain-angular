@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Optional, Output} from '@angular/core';
 import {FolderService, Data} from "./folder.service";
 import { Amplify, Auth } from 'aws-amplify';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -14,7 +14,7 @@ export class FolderComponent implements OnInit {
   @Output() selectImage: EventEmitter<any> = new EventEmitter();
   constructor(
     private folderService: FolderService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Optional() @Inject(MAT_DIALOG_DATA) public data?: any
   ) { }
 
   dataSource : any = [];
@@ -27,8 +27,7 @@ export class FolderComponent implements OnInit {
 
   childFolders : any = []
 
-  selected: any = undefined
-
+  selected: Array<any> = []
 
   ngOnInit(): void {
       this.folderService.getConfig()
@@ -90,8 +89,20 @@ export class FolderComponent implements OnInit {
 
 
   selectCallback = (args: any): void => {
-    this.selected = args
-    console.log("called back")
+      if (this.data?.multiselect) {
+        this.selected.push(args)
+      } else {
+        this.selected = [args]
+      }
+  }
+
+  deselectCallback = (args: any): void => {
+    if (this.data?.multiselect) {
+      let selectedIndex = this.selected.findIndex((img: any) => img.id == args.id)
+      this.selected.splice(selectedIndex, 1)
+    } else {
+      this.selected = []
+    }
   }
 
   selectImageSubmit(){

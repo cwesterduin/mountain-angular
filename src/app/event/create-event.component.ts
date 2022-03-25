@@ -224,7 +224,8 @@ export class CreateEventComponent implements OnInit {
     const dialogRef = this.dialog.open(FolderComponent, {
       panelClass: 'large-dialog',
       data: {
-        appendMedia: (image: any) => this.appendMedia(image)
+        appendMedia: (image: any) => this.appendMedia(image),
+        multiselect: true,
       }
     });
 
@@ -233,19 +234,21 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  appendMedia(image: any) {
-    let processedImage = {
-      path: "https://" + image.bucketName + ".s3." + image.region + ".amazonaws.com/" + image.path,
-      mediaId: image.id,
-      id: null,
-      sortOrder: null
-    }
-    if (this.media.some(m => m.mediaId === processedImage.mediaId)) {
-      this._snackBar.open("You can't add the same media twice!", "close", {
-        panelClass: ['red-snackbar']
-      });
-    } else {
-      this.media.push(processedImage)
+  appendMedia(images: Array<any>) {
+    for (let image of images) {
+      let processedImage = {
+        path: "https://" + image.bucketName + ".s3." + image.region + ".amazonaws.com/" + image.path,
+        mediaId: image.id,
+        id: null,
+        sortOrder: null
+      }
+      if (this.media.some(m => m.mediaId === processedImage.mediaId)) {
+        this._snackBar.open("You can't add the same media twice!", "close", {
+          panelClass: ['red-snackbar']
+        });
+      } else {
+        this.media.push(processedImage)
+      }
     }
   }
 

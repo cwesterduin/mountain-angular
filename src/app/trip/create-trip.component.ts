@@ -83,9 +83,12 @@ export class CreateTripComponent implements OnInit {
     const dialogRef = this.dialog.open(FolderComponent, {
       panelClass: 'large-dialog',
       data: {
-        appendMedia: (image: any) => this.primaryImage = {
-          ...image,
-          path: "https://" + image.bucketName + ".s3." + image.region + ".amazonaws.com/" + image.path
+        appendMedia: (image: any) => {
+          image = image[0]
+          this.primaryImage = {
+            ...image,
+            path: "https://" + image.bucketName + ".s3." + image.region + ".amazonaws.com/" + image.path
+          }
         }
       }
     });

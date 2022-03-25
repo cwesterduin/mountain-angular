@@ -58,3 +58,13 @@ td, th {
   justify-content: center !important;
 }
 
+.drop-zone {
+  border: solid 1px red;
+}
+
+.ngx-file-drop__content {
+  height: 100% !important;
+  display: flex;
+  flex-flow: row wrap !important;
+  align-content: flex-start;
+}

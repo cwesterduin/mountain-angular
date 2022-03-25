@@ -7,7 +7,9 @@ import {CreateEventComponent} from "./event/create-event.component";
 import {MapFeatureComponent} from "./map-feature/map-feature.component";
 import {CreateMapFeatureComponent} from "./map-feature/create-map-feature";
 import {TripComponent} from "./trip/trip.component";
-import {CreateTripComponent} from "./trip/create-trip.component"; // CLI imports router
+import {CreateTripComponent} from "./trip/create-trip.component";
+import {DndComponent} from "./dnd/dnd.component";
+import {FolderComponent} from "./folder/folder.component"; // CLI imports router
 
 
 // configures NgModule imports and exports
@@ -73,6 +75,11 @@ import {CreateTripComponent} from "./trip/create-trip.component"; // CLI imports
             component: CreateTripComponent,
           }
         ]
+      },
+      {
+        path: 'file-upload',
+        component: FolderComponent,
+        canActivate: [CanActivateAuth],
       }
     ])
   ],
