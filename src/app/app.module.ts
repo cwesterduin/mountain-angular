@@ -51,6 +51,7 @@ import { TripComponent } from './trip/trip.component';
 import { CreateTripComponent } from './trip/create-trip.component';
 import {TripService} from "./trip/trip.service";
 import {MatSelectModule} from "@angular/material/select";
+import {DndService} from "./dnd/dnd.service";
 
 Amplify.configure(config);
 
@@ -108,6 +109,7 @@ Amplify.configure(config);
     EventService,
     TripService,
     MapFeatureService,
+    DndService,
     httpInterceptorProviders
   ],
   bootstrap: [AppComponent]

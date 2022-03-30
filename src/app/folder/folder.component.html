@@ -6,7 +6,7 @@
   <li (click)="goTo(string)" style="display: inline" *ngFor="let string of path">{{string}}/</li>
 </ul>
 <mat-dialog-content class="mat-typography folder-container">
-  <app-dnd style="width: 100%">
+  <app-dnd [path]="path" style="width: 100%">
     <div class="folder"
          *ngFor="let folder of childFolders"
          (click)="select(folder[folder.length - 1])"

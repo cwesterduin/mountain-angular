@@ -1,21 +1,27 @@
-import { Component } from '@angular/core';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import {HttpClient} from "@angular/common/http";
+import {Component, Input} from '@angular/core';
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
+import {DndService} from "./dnd.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-dnd',
   templateUrl: './dnd.component.html',
-  styleUrls: ['./dnd.component.css']
+  styleUrls: ['./dnd.component.css', '../helpers/snackbar.css']
 })
 export class DndComponent {
 
-  constructor(private http: HttpClient) { }
+  @Input('path') path = [];
+  constructor(
+    private dndService: DndService,
+    private _snackBar: MatSnackBar,
+  ) { }
 
   public files: NgxFileDropEntry[] = [];
-  public formData: FormData = new FormData()
+  public formData: FormData;
 
   public dropped(files: NgxFileDropEntry[]) {
-    this.files = files;
+    this.formData = new FormData()
+    this.files = files.map((f: NgxFileDropEntry) => new NgxFileDropEntry(this.path.join("/") + "/" + f.relativePath, f.fileEntry))
     // Is it a file?
     for (const droppedFile of this.files) {
 
@@ -25,7 +31,7 @@ export class DndComponent {
           this.formData.append('files', file, droppedFile.relativePath)
         });
       } else {
-        this.formData.append('folders', new Blob(), droppedFile.relativePath)
+        this.formData.append('folders', new Blob(),droppedFile.relativePath)
       }
     }
 
@@ -34,31 +40,22 @@ export class DndComponent {
 
 
   uploadFiles() {
-    for (let pair of this.formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]);
-    }
-
-    this.http.post('http://localhost:8080/s3/testbucket240222/upload', this.formData)
-      .subscribe(data => {
-        console.log(data)
-      })
-
-
-    // } else {
-    //   // It was a directory (empty directories are added, otherwise only files)
-    //   const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-    //   // formData.append('files', "folder", droppedFile.relativePath)
-    // }
-    // }
-
+    this.dndService.postFiles(this.formData).subscribe({
+      next: this.handlePostResponse.bind(this),
+      error: this.handlePostError.bind(this),
+    });
   }
 
+handlePostResponse(data: any) {
+  this._snackBar.open("success", "close", {
+    panelClass: ['green-snackbar']
+  });
+}
 
-  public fileOver(event: any){
-    console.log(event);
-  }
+handlePostError(error: any) {
+  this._snackBar.open(error.message, "close", {
+    panelClass: ['red-snackbar']
+  });
+}
 
-  public fileLeave(event: any){
-    console.log(event);
-  }
 }
