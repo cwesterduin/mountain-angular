@@ -1,20 +1,26 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-mountainangular-dev-172525-authRole",
-      "UnauthRoleArn": "arn:aws:iam::669505921130:role/amplify-mountainangular-dev-172525-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::669505921130:role/amplify-mountainangular-dev-172525-authRole",
-      "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-mountainangular-dev-172525-deployment",
-      "UnauthRoleName": "amplify-mountainangular-dev-172525-unauthRole",
-      "StackName": "amplify-mountainangular-dev-172525",
-      "StackId": "arn:aws:cloudformation:eu-west-2:669505921130:stack/amplify-mountainangular-dev-172525/0d497420-9be0-11ec-b475-0a1cbeef9704",
-      "AmplifyAppId": "dno9rwt6r37km"
-    },
-    "categories": {
-      "auth": {
-        "mountainangularbadbd2e7": {}
-      }
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-mountainangular-dev-172525-authRole",
+            "UnauthRoleArn": "arn:aws:iam::669505921130:role/amplify-mountainangular-dev-172525-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::669505921130:role/amplify-mountainangular-dev-172525-authRole",
+            "Region": "eu-west-2",
+            "DeploymentBucketName": "amplify-mountainangular-dev-172525-deployment",
+            "UnauthRoleName": "amplify-mountainangular-dev-172525-unauthRole",
+            "StackName": "amplify-mountainangular-dev-172525",
+            "StackId": "arn:aws:cloudformation:eu-west-2:669505921130:stack/amplify-mountainangular-dev-172525/0d497420-9be0-11ec-b475-0a1cbeef9704",
+            "AmplifyAppId": "dno9rwt6r37km"
+        },
+        "categories": {
+            "auth": {
+                "mountainangularbadbd2e7": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "dno9rwt6r37km",
+                    "type": "cicd"
+                }
+            }
+        }
     }
-  }
 }
