@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient } from '@angular/common/http';
+import {environment} from "../../environments/environment";
 
 export interface Data extends Array<any>{
 }
@@ -10,7 +11,7 @@ export class FolderService {
     private http: HttpClient
   ) { }
 
-  configUrl = 'http://localhost:8080/s3/alfie192345/folders/';
+  configUrl = environment.url + '/s3/alfie192345/folders/';
 
   getConfig() {
     return this.http.get<Data>(this.configUrl);
