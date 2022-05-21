@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {environment} from "../../environments/environment";
 
 export interface Data extends Array<any>{
 }
 
 @Injectable()
 export class ImageService {
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  getImages(bucket: string, folder: string) {
-    return this.http.get<Data>("http://localhost:8080/s3/" + bucket + "/images?folderName=" + folder);
+  getImages(folder: string) {
+    let configUrl = environment.url + '/s3/' + environment.bucket + "/images?folderName=";
+    return this.http.get<Data>(configUrl + folder);
   }
 }

@@ -11,7 +11,7 @@ export class FolderService {
     private http: HttpClient
   ) { }
 
-  configUrl = environment.url + '/s3/alfie192345/folders/';
+  configUrl = environment.url + '/s3/' + environment.bucket + '/folders/';
 
   getConfig() {
     return this.http.get<Data>(this.configUrl);

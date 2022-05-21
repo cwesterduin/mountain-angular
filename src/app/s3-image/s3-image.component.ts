@@ -23,7 +23,7 @@ export class S3ImageComponent implements OnInit, OnChanges {
 
   ngOnChanges() : void {
     this.imageData = []
-    this.imageService.getImages("alfie192345", this.path.join("/") + "/")
+    this.imageService.getImages(this.path.join("/") + "/")
       // clone the data object, using its known Config shape
       .subscribe((data: Array<any>) => {
         this.imageData = data
