@@ -14,7 +14,6 @@ export class NavComponent implements OnInit {
   constructor(
     private router: Router,
     public authenticator: AuthenticatorService,
-    private ElByClassName: ElementRef
   ) {
     Amplify.configure(awsExports)
   }

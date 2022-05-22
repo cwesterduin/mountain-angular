@@ -154,6 +154,16 @@ export class CreateMapFeatureComponent implements OnInit {
       this.fitToBounds = this.center.toBounds(10000);
     }
   }
+
+  delete(){
+    if (this.id) {
+      this.mapFeatureService.deleteMapFeature(this.id).subscribe({
+        next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/trips'),
+        error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
+      });
+    }
+  }
+
 }
 
 

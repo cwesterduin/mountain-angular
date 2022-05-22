@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {EventService} from "./event.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -24,6 +24,7 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {MapFeatureService} from "../map-feature/map-feature.service";
 import {TripService} from "../trip/trip.service";
 import {MatOptionSelectionChange} from "@angular/material/core";
+import {ResponseHelpers} from "../helpers/responseHelpers";
 
 @Component({
   selector: 'app-create-event',
@@ -50,6 +51,7 @@ export class CreateEventComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
     private _ngZone: NgZone,
+    private router: Router,
   ) {
   }
 
@@ -210,9 +212,10 @@ export class CreateEventComponent implements OnInit {
       data.id = this.id
     }
       this.eventService.postEvent(data).subscribe({
-        next: this.handlePostResponse.bind(this),
-        error: this.handlePostError.bind(this),
+        next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/events'),
+        error: (error) =>  ResponseHelpers.handlePostError(error, this._snackBar),
       });
+
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -350,6 +353,15 @@ export class CreateEventComponent implements OnInit {
 
   displayFn(value: any) {
     return value ? value.name : undefined;
+  }
+
+  delete(){
+    if (this.id) {
+      this.tripService.deleteTrip(this.id).subscribe({
+        next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/trips'),
+        error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
+      });
+    }
   }
 
 

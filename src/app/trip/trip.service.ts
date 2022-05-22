@@ -31,4 +31,10 @@ export class TripService {
     );
   }
 
+  deleteTrip(id: string) {
+    return this.http.delete<any>(this.configUrl + id).pipe(
+      catchError(ResponseHelpers.handleError)
+    );
+  }
+
 }

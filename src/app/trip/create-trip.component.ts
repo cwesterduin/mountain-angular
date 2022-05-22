@@ -97,4 +97,13 @@ export class CreateTripComponent implements OnInit {
     });
   }
 
+  delete(){
+    if (this.id) {
+      this.tripService.deleteTrip(this.id).subscribe({
+        next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/trips'),
+        error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
+      });
+    }
+  }
+
 }

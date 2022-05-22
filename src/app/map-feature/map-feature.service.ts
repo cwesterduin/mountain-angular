@@ -30,4 +30,10 @@ export class MapFeatureService {
       catchError(ResponseHelpers.handleError)
     );
   }
+
+  deleteMapFeature(id: string) {
+    return this.http.delete<any>(this.configUrl + id).pipe(
+      catchError(ResponseHelpers.handleError)
+    );
+  }
 }

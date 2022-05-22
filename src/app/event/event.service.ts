@@ -28,10 +28,17 @@ export class EventService {
     );
   }
 
+  deleteEvent(id: string) {
+    return this.http.delete<any>(this.configUrl + id).pipe(
+      catchError(ResponseHelpers.handleError)
+    );
+  }
+
   deleteEventMedia(data: any) {
     return this.http.delete<any>(this.configUrl + "media/" + data).pipe(
       catchError(ResponseHelpers.handleError)
     );
   }
+
 
 }

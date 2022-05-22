@@ -33,6 +33,7 @@ export class EventComponent implements OnInit {
     await this.router.navigate(["/events/edit/" + elementElement])
   }
 
+
 }
 
 

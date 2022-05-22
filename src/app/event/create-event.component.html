@@ -118,6 +118,7 @@
       </div>
     </div>
 
+    <button *ngIf="!!id" (click)="delete" type="button" mat-button color="warn">Delete</button>
     <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
   </form>
 </ng-container>
