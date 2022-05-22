@@ -1,9 +1,11 @@
-<amplify-authenticator data-signIn=(authenticated) [loginMechanisms]="['username']" [hideSignUp]="true">
+<amplify-authenticator
+  [ngClass]="signedIn ? 'hidden' : 'null'"
+  data-signIn=(authenticated) [loginMechanisms]="['username']" [hideSignUp]="true">
   <ng-template
     amplifySlot="authenticated"
   >
-    <mat-toolbar>
-      <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <mat-toolbar color="primary">
+      <button [ngClass]="'btn'" mat-flat-button  [matMenuTriggerFor]="menu">Menu</button>
       <mat-menu #menu="matMenu">
         <a routerLink="/" routerLinkActive="active" mat-menu-item>Home</a>
         <a routerLink="/trips" routerLinkActive="active" mat-menu-item>Trips</a>
@@ -13,7 +15,7 @@
       </mat-menu>
       <span>Mountain-Dog Admin</span>
       <span class="example-spacer"></span>
-      <button mat-button (click)="signOut()">Sign out</button>
+      <button [ngClass]="'btn'"  mat-flat-button (click)="signOut()">Sign out</button>
     </mat-toolbar>
   </ng-template>
 </amplify-authenticator>

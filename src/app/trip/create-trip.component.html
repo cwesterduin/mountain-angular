@@ -12,7 +12,7 @@
 
   <mat-label>Media:</mat-label>
   <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
-  <img *ngIf="!!primaryImage"  src="{{primaryImage['path']}}">
+  <img *ngIf="!!primaryImage"  src="{{primaryImage['path'].replace('images', 'thumbnails')}}">
 
   <button type="submit" mat-button [disabled]="!tripForm.valid">Submit</button>
 

@@ -1,4 +1,4 @@
-<a mat-flat-button routerLink="create">Create new</a>
+<a [ngClass]="'btn'" mat-raised-button color="primary" routerLink="create">Create new</a>
 <div class="table-responsive">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -11,5 +11,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
+
 </div>
 <router-outlet></router-outlet>

@@ -68,3 +68,21 @@ td, th {
   flex-flow: row wrap !important;
   align-content: flex-start;
 }
+
+.btn.mat-raised-button {
+  margin: 1rem
+}
+
+.btn.mat-flat-button {
+  margin: 1rem
+}
+
+[data-amplify-authenticator] [data-amplify-router]  {
+  border: none;
+  box-shadow: none;
+}
+
+.amplify-button[data-variation='primary'] {
+  background: #3f51b5
+}
+
