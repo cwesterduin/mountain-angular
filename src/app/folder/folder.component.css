@@ -1,11 +1,18 @@
-.folder-container {
-  display: flex;
-  flex-flow: row wrap;
-}
-
 .folder {
   margin: 1rem;
   height: 64px;
   width: 64px;
   text-overflow: ellipsis;
+}
+
+.folder-inner {
+  display: grid;
+  grid-template-columns: repeat(5, calc(20% - .5rem));
+  grid-auto-flow: row;
+  align-items: baseline;
+  grid-gap: .5rem
+}
+
+app-s3-image {
+  display: contents;
 }

@@ -11,7 +11,11 @@
 
     <mat-form-field appearance="standard">
       <mat-label>Type:</mat-label>
-      <input id="type" type="text" formControlName="type" matInput>
+      <mat-select formControlName="type" [(ngModel)]="selectedValue">
+        <mat-option *ngFor="let type of types" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
 

@@ -1,1 +1,18 @@
+.preview-inner {
+  display: grid;
+  grid-template-columns: repeat(5, calc(20% - .5rem));
+  grid-auto-flow: row;
+  align-items: baseline;
+  grid-gap: .5rem
+}
 
+.preview-img {
+  border: solid 4px transparent;
+  width: 100%;
+}
+
+.preview-desc {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

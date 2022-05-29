@@ -6,6 +6,7 @@ import {throwError} from "rxjs";
 export class ResponseHelpers {
 
   static handleError(error: HttpErrorResponse) {
+    console.log(error)
     let msg = error.status
     if (msg === 0) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -15,11 +16,11 @@ export class ResponseHelpers {
       console.error(
         `Backend returned code ${error.status}, body was: `, error.error);
     }
-    return throwError(() => new Error(msg.toString()));
+    return throwError(() => new Error(JSON.stringify(error.error)));
   }
 
-  static handlePostResponse(snackBar: MatSnackBar, router: Router, redirect?: string) {
-    if (redirect) {
+  static handlePostResponse(snackBar: MatSnackBar, router?: Router, redirect?: string) {
+    if (redirect && router) {
       router.navigate([redirect]).then((navigated: boolean) => {
         if (navigated) {
           snackBar.open("success", "close", {
@@ -35,6 +36,7 @@ export class ResponseHelpers {
   }
 
   static handlePostError(error: any, snackBar: MatSnackBar) {
+    console.log(error)
     snackBar.open(error.message, "close", {
       panelClass: ['red-snackbar']
     });

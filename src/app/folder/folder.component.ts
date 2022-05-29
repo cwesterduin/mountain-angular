@@ -2,11 +2,13 @@ import {Component, EventEmitter, Inject, Input, OnInit, Optional, Output} from '
 import {FolderService, Data} from "./folder.service";
 import { Amplify, Auth } from 'aws-amplify';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {ResponseHelpers} from "../helpers/responseHelpers";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.component.html',
-  styleUrls: ['./folder.component.css']
+  styleUrls: ['./folder.component.css', '../helpers/snackbar.css']
 })
 export class FolderComponent implements OnInit {
   session: any = Auth.currentSession();
@@ -14,6 +16,7 @@ export class FolderComponent implements OnInit {
   @Output() selectImage: EventEmitter<any> = new EventEmitter();
   constructor(
     private folderService: FolderService,
+    private _snackBar: MatSnackBar,
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: any
   ) { }
 
@@ -112,4 +115,13 @@ export class FolderComponent implements OnInit {
   appendImage(selected: any) {
    this.data.appendMedia(selected)
   }
+
+  deleteS3Objects() {
+    this.folderService.deleteS3Objects(this.selected).subscribe({
+      next: () => ResponseHelpers.handlePostResponse(this._snackBar),
+      error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
+    })
+  }
+
+
 }

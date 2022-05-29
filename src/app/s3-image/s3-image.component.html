@@ -1,4 +1,8 @@
-<ng-container
-     *ngFor="let img of imageData; index as i"
-><img (click)="selectThis(img, i)" class="s3image {{selected.includes(img.id) ? 'selected' : ''}}" style="margin: 1rem" height="64" src="https://{{img.bucketName}}.s3.eu-west-2.amazonaws.com/{{img.path.replace('images', 'thumbnails')}}"/>
-</ng-container>
+  <ng-container *ngFor="let img of imageData; index as i"
+  >
+    <div>
+      <img (click)="selectThis(img, i)" class="s3image {{selected.includes(img.id) ? 'selected' : ''}}"
+           src="https://{{img.bucketName}}.s3.eu-west-2.amazonaws.com/{{img.path.replace('images', 'thumbnails')}}"/>
+      <p class="s3image-desc">{{img.path.split("/")[img.path.split("/").length - 1]}}</p>
+    </div>
+  </ng-container>

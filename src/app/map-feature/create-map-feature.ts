@@ -34,6 +34,9 @@ export class CreateMapFeatureComponent implements OnInit {
   public center: LatLng = new LatLng(55, -3)
   public fitToBounds: LatLngBounds
 
+  selectedValue: string;
+  types: string[] =  ['munro','corbett','walk','view','swim','kayak']
+
   mapFeatureForm = new FormGroup({
     name: new FormControl('', Validators.required),
     type: new FormControl(''),
@@ -110,7 +113,7 @@ export class CreateMapFeatureComponent implements OnInit {
   onSubmit() {
     let data = this.mapFeatureForm.value
     data.coordinate = [data.lat, data.lng]
-    data.media = this.media
+    data.primaryImage = this.media
     if (this.id) {
       data.id = this.id
     }

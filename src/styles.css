@@ -59,14 +59,19 @@ td, th {
 }
 
 .drop-zone {
-  border: solid 1px red;
+  border: solid 1px lightgrey;
+  padding: .2rem;
+  margin: 1rem 0
 }
 
 .ngx-file-drop__content {
   height: 100% !important;
-  display: flex;
-  flex-flow: row wrap !important;
-  align-content: flex-start;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+.ngx-file-drop__content {
+  display: block !important;
 }
 
 .btn.mat-raised-button {
