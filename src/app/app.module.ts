@@ -2,11 +2,9 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {TableComponent} from './table/table.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTableModule} from "@angular/material/table";
 import {HttpClientModule} from '@angular/common/http';
-import {TableService} from "./table/table.service";
 import {FolderComponent} from './folder/folder.component';
 import {FolderService} from "./folder/folder.service";
 
@@ -52,6 +50,7 @@ import { CreateTripComponent } from './trip/create-trip.component';
 import {TripService} from "./trip/trip.service";
 import {MatSelectModule} from "@angular/material/select";
 import {DndService} from "./dnd/dnd.service";
+import {MatSortModule} from "@angular/material/sort";
 
 Amplify.configure(config);
 
@@ -59,7 +58,6 @@ Amplify.configure(config);
 @NgModule({
   declarations: [
     AppComponent,
-    TableComponent,
     FolderComponent,
     S3ImageComponent,
     DndComponent,
@@ -72,38 +70,38 @@ Amplify.configure(config);
     TripComponent,
     CreateTripComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatIconModule,
-    NgxFileDropModule,
-    MatDialogModule,
-    RouterModule,
-    AmplifyAuthenticatorModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatPaginatorModule,
-    DragDropModule,
-    MatCheckboxModule,
-    LeafletModule,
-    MatAutocompleteModule,
-    MatChipsModule,
-    MatSelectModule,
-    FormsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatIconModule,
+        NgxFileDropModule,
+        MatDialogModule,
+        RouterModule,
+        AmplifyAuthenticatorModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatMenuModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatPaginatorModule,
+        DragDropModule,
+        MatCheckboxModule,
+        LeafletModule,
+        MatAutocompleteModule,
+        MatChipsModule,
+        MatSelectModule,
+        FormsModule,
+        MatSortModule
+    ],
   providers: [
-    TableService,
     FolderService,
     ImageService,
     EventService,

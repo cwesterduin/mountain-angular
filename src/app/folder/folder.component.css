@@ -5,6 +5,10 @@
   text-overflow: ellipsis;
 }
 
+.folder-container {
+  display: contents;
+}
+
 .folder-inner {
   display: grid;
   grid-template-columns: repeat(5, calc(20% - .5rem));

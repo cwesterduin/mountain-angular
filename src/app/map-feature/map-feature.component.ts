@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Data} from "../folder/folder.service";
 import {MapFeatureService} from "./map-feature.service";
 import {Router} from "@angular/router";
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-map-feature',
@@ -15,6 +17,7 @@ export class MapFeatureComponent implements OnInit {
     private router: Router,
   ) { }
 
+  @ViewChild(MatSort) sort: MatSort;
   dataSource : any = [];
   displayedColumns: string[] = []
 
@@ -22,9 +25,11 @@ export class MapFeatureComponent implements OnInit {
     this.mapFeatureService.getMapFeatures()
       .subscribe((data: Data) => {
         this.displayedColumns = Object.keys(data[0])
-        this.dataSource = data
+        this.dataSource  = new MatTableDataSource(data);
+        this.dataSource.sort = this.sort;
       })
   }
+
 
   async goToEdit(elementElement: any) {
     await this.router.navigate(["/map-features/edit/" + elementElement])

@@ -1,14 +1,14 @@
 <!--<button mat-raised-button (click)="openDialog()">Add event</button>-->
-<a mat-flat-button routerLink="create">Create new</a>
+<a [ngClass]="'btn'" mat-raised-button color="primary"  routerLink="create">Create new</a>
 <div class="table-responsive">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
 
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column}}">
-      <th mat-header-cell *matHeaderCellDef>{{column}}</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="{{column}}">{{column}}</th>
       <td (dblclick)="goToEdit(element['id'])" mat-cell *matCellDef="let element">{{element[column]}}</td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
