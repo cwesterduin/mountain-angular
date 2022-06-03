@@ -7,6 +7,7 @@ import {FolderComponent} from "../folder/folder.component";
 import {MatDialog} from "@angular/material/dialog";
 import {icon, latLng, LatLng, LatLngBounds, Layer, marker, tileLayer} from "leaflet";
 import {ResponseHelpers} from "../helpers/responseHelpers"
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-create-map-feature',
@@ -20,7 +21,8 @@ export class CreateMapFeatureComponent implements OnInit {
     private mapFeatureService: MapFeatureService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService
   ) {
   }
 
@@ -80,6 +82,7 @@ export class CreateMapFeatureComponent implements OnInit {
       pronunciation: data["pronunciation"],
       munroOrder: data["munroOrder"]
     })
+    this.selectedValue = data["type"]
     this.media = data["primaryImage"]
     if (this.media) {
       this.media.path = "https://" + this.media.bucketName + ".s3." + this.media.region + ".amazonaws.com/" + this.media.path
@@ -165,6 +168,20 @@ export class CreateMapFeatureComponent implements OnInit {
         error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
       });
     }
+  }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+      // @ts-ignore
+      target: event.target,
+      message: `Are you sure that you want to delete ${this.mapFeatureForm.value["name"]}`,
+      accept: () => {
+        this.delete()
+      },
+      reject: () => {
+        return
+      }
+    });
   }
 
 }

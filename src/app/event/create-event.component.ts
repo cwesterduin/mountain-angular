@@ -25,6 +25,7 @@ import {MapFeatureService} from "../map-feature/map-feature.service";
 import {TripService} from "../trip/trip.service";
 import {MatOptionSelectionChange} from "@angular/material/core";
 import {ResponseHelpers} from "../helpers/responseHelpers";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-create-event',
@@ -52,6 +53,7 @@ export class CreateEventComponent implements OnInit {
     public dialog: MatDialog,
     private _ngZone: NgZone,
     private router: Router,
+    private confirmationService: ConfirmationService
   ) {
   }
 
@@ -362,6 +364,20 @@ export class CreateEventComponent implements OnInit {
         error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
       });
     }
+  }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+      // @ts-ignore
+      target: event.target,
+      message: `Are you sure that you want to delete ${this.eventForm.value["name"]}`,
+      accept: () => {
+        this.delete()
+      },
+      reject: () => {
+        return
+      }
+    });
   }
 
 

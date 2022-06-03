@@ -14,7 +14,10 @@
   <button type="button" mat-raised-button (click)="openDialog()">Add media</button>
   <img *ngIf="!!primaryImage"  src="{{primaryImage['path'].replace('images', 'thumbnails')}}">
 
-  <button *ngIf="!!id" (click)="delete()" type="button" mat-button color="warn">Delete</button>
-  <button type="submit" mat-button [disabled]="!tripForm.valid">Submit</button>
+  <div>
+    <p-confirmPopup></p-confirmPopup>
+    <button *ngIf="!!id" (click)="confirm($event)" type="button" mat-stroked-button color="warn">Delete</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="!tripForm.valid">Submit</button>
+  </div>
 
 </form>

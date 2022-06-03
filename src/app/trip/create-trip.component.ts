@@ -6,11 +6,13 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {FolderComponent} from "../folder/folder.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ResponseHelpers} from "../helpers/responseHelpers";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-create-trip',
   templateUrl: './create-trip.component.html',
-  styleUrls: ['./trip.component.css', '../helpers/snackbar.css']
+  styleUrls: ['./trip.component.css', '../helpers/snackbar.css'],
+  providers: [ConfirmationService]
 })
 export class CreateTripComponent implements OnInit {
 
@@ -20,6 +22,7 @@ export class CreateTripComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private router: Router,
     public dialog: MatDialog,
+    private confirmationService: ConfirmationService
   ) {
   }
 
@@ -104,6 +107,20 @@ export class CreateTripComponent implements OnInit {
         error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
       });
     }
+  }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+      // @ts-ignore
+      target: event.target,
+      message: `Are you sure that you want to delete ${this.tripForm.value["name"]}`,
+      accept: () => {
+        this.delete()
+      },
+      reject: () => {
+        return
+      }
+    });
   }
 
 }

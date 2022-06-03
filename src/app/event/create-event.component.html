@@ -1,4 +1,4 @@
-<ng-container *ngIf="loading">
+<ng-container *ngIf="loading" xmlns:m="http://www.w3.org/1999/xhtml">
   <mat-spinner></mat-spinner>
 </ng-container>
 <ng-container *ngIf="found">
@@ -117,9 +117,11 @@
         <p>{{i}}: {{med['mediaId']}}</p>
       </div>
     </div>
-
-    <button *ngIf="!!id" (click)="delete()" type="button" mat-button color="warn">Delete</button>
-    <button type="submit" mat-button [disabled]="!eventForm.valid">Submit</button>
+    <div>
+      <p-confirmPopup></p-confirmPopup>
+      <button *ngIf="!!id" (click)="confirm($event)" type="button" mat-stroked-button color="warn">Delete</button>
+      <button type="submit" mat-raised-button color="primary" [disabled]="!eventForm.valid">Submit</button>
+    </div>
   </form>
 </ng-container>
 <ng-container *ngIf="!found && !loading">

@@ -51,6 +51,9 @@ import {TripService} from "./trip/trip.service";
 import {MatSelectModule} from "@angular/material/select";
 import {DndService} from "./dnd/dnd.service";
 import {MatSortModule} from "@angular/material/sort";
+import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {ConfirmationService} from "primeng/api";
+import {ButtonModule} from "primeng/button";
 
 Amplify.configure(config);
 
@@ -70,37 +73,39 @@ Amplify.configure(config);
     TripComponent,
     CreateTripComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatTableModule,
-        MatIconModule,
-        NgxFileDropModule,
-        MatDialogModule,
-        RouterModule,
-        AmplifyAuthenticatorModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatMenuModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-        MatPaginatorModule,
-        DragDropModule,
-        MatCheckboxModule,
-        LeafletModule,
-        MatAutocompleteModule,
-        MatChipsModule,
-        MatSelectModule,
-        FormsModule,
-        MatSortModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatIconModule,
+    NgxFileDropModule,
+    MatDialogModule,
+    RouterModule,
+    AmplifyAuthenticatorModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatPaginatorModule,
+    DragDropModule,
+    MatCheckboxModule,
+    LeafletModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatSelectModule,
+    FormsModule,
+    MatSortModule,
+    ConfirmPopupModule,
+    ButtonModule
+  ],
   providers: [
     FolderService,
     ImageService,
@@ -108,7 +113,8 @@ Amplify.configure(config);
     TripService,
     MapFeatureService,
     DndService,
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })
