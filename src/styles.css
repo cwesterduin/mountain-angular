@@ -96,6 +96,7 @@ td, th {
   height: 100% !important;
   max-height: 80vh;
   overflow-y: scroll;
+  color: initial !important
 }
 
 .ngx-file-drop__content {

@@ -1,0 +1,20 @@
+<div *ngIf="!editMode">
+  <button type="button" (click)="setEditMode()" mat-icon-button>
+    <mat-icon>edit</mat-icon>
+  </button>
+  <span>{{img.description ? img.description : "..."}}</span>
+</div>
+<div *ngIf="editMode">
+  <button type="button" (click)="setEditMode()" color="warn" mat-icon-button>
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+  <button  type="button"(click)="onSubmit()" color="primary" mat-icon-button>
+    <mat-icon>save</mat-icon>
+  </button>
+  <form (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="standard">
+      <mat-label>Description:</mat-label>
+      <input id="description" type="text" placeholder="enter description..." value="{{description}}" name="description" [(ngModel)]="description" matInput>
+    </mat-form-field>
+  </form>
+</div>

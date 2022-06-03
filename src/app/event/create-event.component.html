@@ -114,7 +114,7 @@
       <div class="example-box" *ngFor="let med of media; index as i" cdkDrag>
         <button mat-button color="warn" type="button" (click)="removeMedia(med)">x</button>
         <img src="{{med['path']}}" alt="{{med['mediaId']}}">
-        <p>{{i}}: {{med['mediaId']}}</p>
+        <app-s3-description [img]="med"></app-s3-description>
       </div>
     </div>
     <div>

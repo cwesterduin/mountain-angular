@@ -4,5 +4,6 @@
       <img (click)="selectThis(img, i)" class="s3image {{selected.includes(img.id) ? 'selected' : ''}}"
            src="https://{{img.bucketName}}.s3.eu-west-2.amazonaws.com/{{img.path.replace('images', 'thumbnails')}}"/>
       <p class="s3image-desc">{{img.path.split("/")[img.path.split("/").length - 1]}}</p>
+      <app-s3-description [img]="img"></app-s3-description>
     </div>
   </ng-container>

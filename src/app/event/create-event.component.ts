@@ -245,7 +245,8 @@ export class CreateEventComponent implements OnInit {
         path: "https://" + image.bucketName + ".s3." + image.region + ".amazonaws.com/" + image.path,
         mediaId: image.id,
         id: null,
-        sortOrder: null
+        sortOrder: null,
+        description: image.description
       }
       if (this.media.some(m => m.mediaId === processedImage.mediaId)) {
         this._snackBar.open("You can't add the same media twice!", "close", {

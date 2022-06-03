@@ -52,8 +52,11 @@ import {MatSelectModule} from "@angular/material/select";
 import {DndService} from "./dnd/dnd.service";
 import {MatSortModule} from "@angular/material/sort";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService, SharedModule} from "primeng/api";
 import {ButtonModule} from "primeng/button";
+import {InplaceModule} from "primeng/inplace";
+import {InputTextModule} from "primeng/inputtext";
+import {S3DescriptionComponent} from "./s3-image/s3-description.component";
 
 Amplify.configure(config);
 
@@ -63,6 +66,7 @@ Amplify.configure(config);
     AppComponent,
     FolderComponent,
     S3ImageComponent,
+    S3DescriptionComponent,
     DndComponent,
     IndexComponent,
     NavComponent,
@@ -104,7 +108,10 @@ Amplify.configure(config);
     FormsModule,
     MatSortModule,
     ConfirmPopupModule,
-    ButtonModule
+    ButtonModule,
+    InplaceModule,
+    SharedModule,
+    InputTextModule
   ],
   providers: [
     FolderService,
