@@ -17,7 +17,9 @@
             <p class="preview-desc">{{item.name}}</p>
           </div>
           </div>
-          <button [ngClass]="'btn'" mat-raised-button color="primary" (click)="uploadFiles()">upload</button>
+          <button [ngClass]="'btn'" mat-stroked-button color="primary" (click)="uploadFiles()">upload</button>
+        <button [ngClass]="'btn'" mat-stroked-button color="warn" (click)="cancel()">cancel</button>
+
       </div>
         <ng-content>
         </ng-content>

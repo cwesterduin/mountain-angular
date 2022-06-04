@@ -1,12 +1,11 @@
-<h2 mat-dialog-title>S3 Folders</h2>
-<button mat-raised-button color="warn" (click)="deleteS3Objects()">Delete selected</button>
+<button [ngClass]="'btn'" mat-stroked-button color="warn" disabled="{{this.selected.length === 0}}" (click)="deleteS3Objects()">Delete selected</button>
 <ul>
   <li (click)="goTo('root')" style="display: inline">root</li>
   /
   <li (click)="goTo(string)" style="display: inline" *ngFor="let string of path">{{string}}/</li>
 </ul>
 <mat-dialog-content class="mat-typography folder-container">
-  <app-dnd [path]="path" style="width: 100%">
+  <app-dnd [reload]="reload" [path]="path" style="width: 100%">
     <div class="folder-inner">
     <div
          *ngFor="let folder of childFolders"
@@ -16,7 +15,7 @@
       <mat-icon aria-hidden="false" aria-label="Example home icon">folder</mat-icon>
       <p>{{folder[folder.length - 1]}}</p>
     </div>
-    <app-s3-image [multiselect]="data?.multiselect" (deselectCallback)="deselectCallback($event)" (selectCallback)="selectCallback($event)" [path]="path"></app-s3-image>
+    <app-s3-image [setImageCount]="setImageCount" [multiselect]="data?.multiselect" (deselectCallback)="deselectCallback($event)" (selectCallback)="selectCallback($event)" [path]="path"></app-s3-image>
     </div>
   </app-dnd>
 </mat-dialog-content>

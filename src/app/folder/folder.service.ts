@@ -15,7 +15,7 @@ export class FolderService {
 
   configUrl = environment.url + '/s3/' + environment.bucket;
 
-  getConfig() {
+  getFolders() {
     return this.http.get<Data>(this.configUrl + '/folders/');
   }
 

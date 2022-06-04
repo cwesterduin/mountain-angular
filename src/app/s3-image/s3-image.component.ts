@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Optional, Output} from '@angular/core';
-import {Data, FolderService} from "../folder/folder.service";
 import {ImageService} from "./s3-image.service";
+import {Subscription} from "rxjs";
+import {ResponseHelpers} from "../helpers/responseHelpers";
 
 @Component({
   selector: 'app-s3-image',
@@ -10,6 +11,7 @@ import {ImageService} from "./s3-image.service";
 export class S3ImageComponent implements OnInit, OnChanges {
 
   @Input('path') path = [];
+  @Input('setImageCount') setImageCount: (args: any) => void;
   @Optional() @Input('multiselect') multiselect: boolean;
   @Output() selectCallback: EventEmitter<any> = new EventEmitter();
   @Output() deselectCallback: EventEmitter<any> = new EventEmitter();
@@ -53,4 +55,19 @@ export class S3ImageComponent implements OnInit, OnChanges {
       }
     }
   }
+
+  reloadImages() {
+    this.imageService.getImages(this.path.join("/") + "/")
+      .subscribe({
+        next: (data) => {
+          this.imageData = data
+          this.setImageCount(data.length)
+        },
+        error: (error) =>  console.log(error),
+      });
+
+  }
+
+
 }
+

@@ -3,6 +3,7 @@ import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import {DndService} from "./dnd.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DomSanitizer} from "@angular/platform-browser";
+import {ResponseHelpers} from "../helpers/responseHelpers";
 
 @Component({
   selector: 'app-dnd',
@@ -12,6 +13,8 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class DndComponent {
 
   @Input('path') path = [];
+  @Input('reload') reload: () => void;
+
   constructor(
     private dndService: DndService,
     private _snackBar: MatSnackBar,
@@ -46,24 +49,20 @@ export class DndComponent {
   }
 
 
-
   uploadFiles() {
     this.dndService.postFiles(this.formData).subscribe({
-      next: this.handlePostResponse.bind(this),
-      error: this.handlePostError.bind(this),
+      next: () => {
+        ResponseHelpers.handlePostResponse(this._snackBar);
+        this.cancel()
+        this.reload()
+      },
+      error: (error) =>  ResponseHelpers.handlePostError(error, this._snackBar)
     });
   }
 
-handlePostResponse(data: any) {
-  this._snackBar.open("success", "close", {
-    panelClass: ['green-snackbar']
-  });
-}
-
-handlePostError(error: any) {
-  this._snackBar.open(error.message, "close", {
-    panelClass: ['red-snackbar']
-  });
-}
-
+  cancel() {
+    this.formData = new FormData()
+    this.previews = []
+    this.files = []
+  }
 }

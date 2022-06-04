@@ -111,6 +111,10 @@ td, th {
   margin: 1rem
 }
 
+.btn.mat-stroked-button {
+  margin: 1rem
+}
+
 [data-amplify-authenticator] [data-amplify-router]  {
   border: none;
   box-shadow: none;
