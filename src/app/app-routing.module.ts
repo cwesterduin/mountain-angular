@@ -81,7 +81,7 @@ import {FolderComponent} from "./folder/folder.component"; // CLI imports router
         component: FolderComponent,
         canActivate: [CanActivateAuth],
       }
-    ])
+    ],  { useHash: true })
   ],
   exports: [RouterModule],
   providers: [CanActivateAuth]
