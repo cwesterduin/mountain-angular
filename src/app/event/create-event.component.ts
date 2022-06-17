@@ -19,13 +19,11 @@ import {
 } from "leaflet";
 import {Observable} from "rxjs";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {MatChipInputEvent} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {MapFeatureService} from "../map-feature/map-feature.service";
-import {TripService} from "../trip/trip.service";
-import {MatOptionSelectionChange} from "@angular/material/core";
 import {ResponseHelpers} from "../helpers/responseHelpers";
 import {ConfirmationService} from "primeng/api";
+import {TripService} from "../trip/trip.service";
 
 @Component({
   selector: 'app-create-event',
@@ -165,7 +163,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   handleFeatureResponse(data: any) {
-    this.allMapFeatures = data
+    this.allMapFeatures = data.map((d: any) => ({...d, coordinate: JSON.parse(d.coordinate)}))
   }
 
   handleTripResponse(data: any) {
@@ -208,7 +206,10 @@ export class CreateEventComponent implements OnInit {
         sortOrder: i
       })
     )
-    data.mapFeatures = this.mapFeatures
+    data.mapFeatures = this.mapFeatures.map((m) => ({
+        id: m.id
+      })
+    )
     data.trip = this.tripControl.value
     if (this.id) {
       data.id = this.id
@@ -320,7 +321,7 @@ export class CreateEventComponent implements OnInit {
       this.mapFeatures.push(event.option.value);
       this.featureInput.nativeElement.value = '';
       this.featureCtrl.setValue(null);
-      this.layers.push(marker(event.option.value.coordinate, {
+      this.layers.push(marker(new LatLng(event.option.value.coordinate[0], event.option.value.coordinate[1]), {
             title: event.option.value.id,
             icon: icon({
               iconSize: [ 25, 41 ],
@@ -360,7 +361,7 @@ export class CreateEventComponent implements OnInit {
 
   delete(){
     if (this.id) {
-      this.tripService.deleteTrip(this.id).subscribe({
+      this.eventService.deleteEvent(this.id).subscribe({
         next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/trips'),
         error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
       });
