@@ -247,7 +247,8 @@ export class CreateEventComponent implements OnInit {
         mediaId: image.id,
         id: null,
         sortOrder: null,
-        description: image.description
+        description: image.description,
+        fileType: image.fileType
       }
       if (this.media.some(m => m.mediaId === processedImage.mediaId)) {
         this._snackBar.open("You can't add the same media twice!", "close", {

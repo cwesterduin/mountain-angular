@@ -1,9 +1,18 @@
   <ng-container *ngFor="let img of imageData; index as i"
   >
     <div>
-      <img (click)="selectThis(img, i)" class="s3image {{selected.includes(img.id) ? 'selected' : ''}}"
-           src="https://{{img.bucketName}}.s3.eu-west-2.amazonaws.com/{{img.path.replace('images', 'thumbnails')}}"/>
-      <p class="s3image-desc">{{img.path.split("/")[img.path.split("/").length - 1]}}</p>
-      <app-s3-description [img]="img"></app-s3-description>
+      <ng-container *ngIf="img['fileType'] === 'video'">
+        <div (click)="selectThis(img, i)" class="s3image {{selected.includes(img.id) ? 'selected' : ''}}">
+          <mat-icon>video_file</mat-icon>
+        </div>
+        <p class="s3image-desc">{{img.path.split("/")[img.path.split("/").length - 1]}}</p>
+        <app-s3-description [img]="img"></app-s3-description>
+      </ng-container>
+      <ng-container *ngIf="img['fileType'] === 'image'">
+        <img (click)="selectThis(img, i)" class="s3image {{selected.includes(img.id) ? 'selected' : ''}}"
+             src="https://{{img.bucketName}}.s3.eu-west-2.amazonaws.com/{{img.path.replace('images', 'thumbnails')}}"/>
+        <p class="s3image-desc">{{img.path.split("/")[img.path.split("/").length - 1]}}</p>
+        <app-s3-description [img]="img"></app-s3-description>
+      </ng-container>
     </div>
   </ng-container>
