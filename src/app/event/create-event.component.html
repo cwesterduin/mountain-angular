@@ -113,7 +113,12 @@
     <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
       <div class="example-box" *ngFor="let med of media; index as i" cdkDrag>
         <button mat-button color="warn" type="button" (click)="removeMedia(med)">x</button>
-        <img src="{{med['path']}}" alt="{{med['mediaId']}}">
+        <ng-container *ngIf="med['fileType'] === 'video'">
+          <mat-icon>video_file</mat-icon>
+        </ng-container>
+        <ng-container *ngIf="med['fileType'] === 'image'">
+          <img src="{{med['path']}}" alt="{{med['mediaId']}}">
+        </ng-container>
         <app-s3-description [img]="med"></app-s3-description>
       </div>
     </div>
