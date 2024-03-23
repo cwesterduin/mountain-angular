@@ -13,3 +13,10 @@
 [data-amplify-authenticator] [data-amplify-router]  {
   border: none;
 }
+
+.custom-green-button {
+  background-color: green !important;
+  color: white !important; /* Optional: Set text color to white */
+  margin: 1rem; /* Adjust the margin value as needed */
+}
+

@@ -3,15 +3,20 @@ import {Router} from "@angular/router";
 import {AuthenticatorService} from "@aws-amplify/ui-angular";
 import {Amplify, Auth} from "aws-amplify";
 import awsExports from "../../aws-exports";
+import {ResponseHelpers} from "../helpers/responseHelpers";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {NavService} from "./nav.service";
 
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css', '../helpers/snackbar.css']
 })
 export class NavComponent implements OnInit {
   constructor(
+    private _snackBar: MatSnackBar,
+    private navService: NavService,
     private router: Router,
     public authenticator: AuthenticatorService,
   ) {
@@ -48,35 +53,13 @@ export class NavComponent implements OnInit {
     }
   }
 
-  // services = {
-  //   that: this,
-  //   async handleSignIn(formData: Record<string, any>,) {
-  //     let {username, password } = formData;
-  //     // custom username
-  //     username = username.toLowerCase();
-  //     let x  = await Auth.signIn({
-  //       username,
-  //       password,
-  //     });
-  //     if (x) {
-  //       this.that.signedIn = true;
-  //       return x
-  //     }
-  //   },
-  // }
-  // pop(){
-  //   setInterval(() => {
-  //     console.log("hello")
-  //     let btnElements = (<HTMLElement>this.ElByClassName.nativeElement).querySelectorAll(
-  //       '.amplify-button'
-  //     );
-  //     console.log(btnElements.length)
-  //     for (let i = 0; i < btnElements.length; i++) {
-  //       btnElements[i].className = "mat-raised-button mat-focus-indicator mat-button-base mat-primary"
-  //       btnElements[i].setAttribute("mat-raised-button", "")
-  //     }
-  //   }, 1)
-  // }
+  triggerBuild() {
+    this.navService.triggerBuild().subscribe({
+      next: (message) => ResponseHelpers.handlePostResponseMessage(message, this._snackBar),
+      error: (error) =>  ResponseHelpers.handlePostError(error, this._snackBar),
+    });
+  }
+
 
 
 }
