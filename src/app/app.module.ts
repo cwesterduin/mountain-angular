@@ -57,6 +57,7 @@ import {ButtonModule} from "primeng/button";
 import {InplaceModule} from "primeng/inplace";
 import {InputTextModule} from "primeng/inputtext";
 import {S3DescriptionComponent} from "./s3-image/s3-description.component";
+import {IndexService} from "./index/index.service";
 
 Amplify.configure(config);
 
@@ -120,6 +121,7 @@ Amplify.configure(config);
     TripService,
     MapFeatureService,
     DndService,
+    IndexService,
     httpInterceptorProviders,
     ConfirmationService
   ],

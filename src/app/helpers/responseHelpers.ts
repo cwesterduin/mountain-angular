@@ -35,6 +35,12 @@ export class ResponseHelpers {
     }
   }
 
+  static handlePostResponseMessage(message: any, snackBar: MatSnackBar, router?: Router, redirect?: string) {
+        snackBar.open(message.message, "close", {
+          panelClass: ['green-snackbar']
+        });
+  }
+
   static handlePostError(error: any, snackBar: MatSnackBar) {
     console.log(error)
     snackBar.open(error.message, "close", {
