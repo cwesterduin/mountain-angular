@@ -10,14 +10,14 @@ export class EventService {
     private http: HttpClient
   ) { }
 
-  configUrl = environment.url + '/events/';
+  configUrl = environment.url + '/events';
 
   getEvents() {
     return this.http.get<any>(this.configUrl);
   }
 
   getOneEvent(id: string) {
-      return this.http.get<any>(this.configUrl + id).pipe(
+      return this.http.get<any>(this.configUrl + "/" + id).pipe(
         catchError(ResponseHelpers.handleError)
       );
   }
@@ -29,13 +29,13 @@ export class EventService {
   }
 
   deleteEvent(id: string) {
-    return this.http.delete<any>(this.configUrl + id).pipe(
+    return this.http.delete<any>(this.configUrl  + "/" + id).pipe(
       catchError(ResponseHelpers.handleError)
     );
   }
 
   deleteEventMedia(data: any) {
-    return this.http.delete<any>(this.configUrl + "media/" + data).pipe(
+    return this.http.delete<any>(this.configUrl + "/media/" + data).pipe(
       catchError(ResponseHelpers.handleError)
     );
   }

@@ -16,7 +16,7 @@ export class FolderService {
   configUrl = environment.url + '/s3/' + environment.bucket;
 
   getFolders() {
-    return this.http.get<Data>(this.configUrl + '/folders/');
+    return this.http.get<Data>(this.configUrl + '/folders');
   }
 
   deleteS3Objects(data: any) {
