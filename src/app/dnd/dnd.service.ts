@@ -10,7 +10,7 @@ export class DndService {
     private http: HttpClient
   ) { }
 
-  configUrl = environment.url + '/s3/' + environment.bucket + '/upload/';
+  configUrl = environment.url + '/s3/' + environment.bucket + '/upload';
 
 
   postFiles(data: any) {
