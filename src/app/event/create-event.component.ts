@@ -363,7 +363,7 @@ export class CreateEventComponent implements OnInit {
   delete(){
     if (this.id) {
       this.eventService.deleteEvent(this.id).subscribe({
-``        next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/events'),
+        next: () => ResponseHelpers.handlePostResponse(this._snackBar, this.router, '/events'),
         error: (error) => ResponseHelpers.handlePostError(error, this._snackBar),
       });
     }
